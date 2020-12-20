@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.css') }}">
+    <script src="{{ url_for('static', filename='jquery.js') }}"></script>
+    <title>Alertas Ruta 38</title>
+
+    <script>     
+        function leerCSV() {
+            var nombreCSV = document.getElementById("nombreCSV").value;
+
+            req = $.ajax({
+                url: '/leerUnCSV',
+                type: 'POST',
+                data: { 'nombreCSV': nombreCSV }
+            });
+
+            req.done(function (data) {
+                if (data.result == "error") {
+                    alert(data.error);
+                    return
+                }               
+            });
+        }
+
+    </script>
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <div class="row" style="background-color: rgb(123, 138, 139); padding-left: 25px;">
+        
+            <div class="col-1"><img src="{{ url_for('static', filename='logo.png') }}" alt=""
+                style="width: 50px; margin-left: 10px; padding-top: 10px;"></div>
+            <div style="padding-top: 10px; color: white;">
+                <h2>Gestión de Riesgos ruta nacional 38</h2>
+            </div>
+      
+      </div>
+    
+    
+      <br>
+      <div class="container">
+        <div>
+          <ul class="nav nav-tabs">
+              <li class="nav-item">
+                  <a class="nav-link active" href="#">Novedades</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="/ultimas24hs" >Alertas en las últimas 24 hs</a>
+              </li>
+              <li class="nav-item ">
+                  <a class="nav-link " href="/informes">Informes</a>
+              </li>
+              <!-- <li class="nav-item ">
+                  <a class="nav-link" href="/informesPorTramo">Buscador</a>
+              </li> -->
+          </ul>
+      </div>
+
+   
+     
+    <div class="form-group col-4" style="margin-top: 20px;">
+        
+            <label for="nombreCSV">Seleccione un CSV:</label>
+            <select class="form-control" name="nombreCSV" id="nombreCSV">
+                <option value="csvLluvia">Lluvia</option>
+                <option value="csvViento">Viento</option>
+                <option value="historialAlertasLluvia">historial Alertas Lluvia</option>
+                
+            </select>           
+         
+        <button class="btn btn-primary btn-xs" style="margin-top: 10px; margin-left: 40%;" onclick="leerCSV()">
+            Leer CSV
+        </button>
+    </div>
+    <div  class="col-12" >
+        <a class="btn btn-info" href="/novedades">Ir a novedades</a>
+
+    </div>
+    
+</body>
+
+</html>

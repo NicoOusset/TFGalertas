@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.css') }}">
+    <script src="{{ url_for('static', filename='jquery.js') }}"></script>
+    <title>Alertas Ruta 38</title>
+
+    <script>
+        function actualizar(){
+
+            var tipo = document.getElementById("tipo").value;
+            var desde = document.getElementById("desde").value;
+            var hasta = document.getElementById("hasta").value;
+                        
+            var img0 = document.getElementById("img0")
+            img0.style.display = "none";
+            var img2 = document.getElementById("img2")
+            img2.style.display = "none";
+            var img3 = document.getElementById("img3")
+            img3.style.display = "none";
+
+            //var sinDatosTipo = document.getElementById("sinDatosTipo")
+            //sinDatosTipo.style.display = "none";
+            var sinDatosNivel = document.getElementById("sinDatosNivel")
+            sinDatosNivel.style.display = "none";
+            var sinDatosNivelSemana = document.getElementById("sinDatosNivelSemana")
+            sinDatosNivelSemana.style.display = "none";
+            var sinDatosNivelMes = document.getElementById("sinDatosNivelMes")
+            sinDatosNivelMes.style.display = "none";
+
+            if (tipo == "-"){
+                alert("Debe seleccionar un tipo de riesgo");
+                return
+            }
+            if(desde==""){
+                alert("Debe seleccionar la fecha Desde");
+                return
+            }
+            if(hasta==""){
+                alert("Debe seleccionar la fecha Hasta");
+                return
+            }
+            if (desde > hasta) {
+                alert("La fecha desde debe ser menor que la fecha hasta");
+                return
+            }
+
+            req = $.ajax({
+                url: '/estadisticasPorTipo',
+                type: 'POST',
+                data: { 'desde':desde, 'hasta':hasta, 'tipo':tipo }
+            });
+
+            req.done(function (data) {
+                if (data.result == "error") {
+                    alert(data.error);
+                    return
+                }
+                else {      
+
+                    /*var imgTipos = data.imagenTipos   
+                    if(imgTipos=="SinDatos"){
+                        sinDatosTipo.style.display = "block";
+                    }
+                    else{
+                        img0.style.display = "block";
+                        img0.setAttribute("src",'data:image/png;base64,'+imgTipos);
+                        
+                    } */                
+                    
+                    var imgNiveles = data.imagenNiveles  
+                    if(imgNiveles=="SinDatos"){
+                        sinDatosNivel.style.display = "block";
+                        
+                    }
+                    else{
+                        img0.style.display = "block";
+                        img0.setAttribute("src",'data:image/png;base64,'+imgNiveles);                        
+                    }    
+
+                    var imgNivelesSemana = data.imagenNivelesSemana  
+                    if(imgNivelesSemana=="SinDatos"){
+                        sinDatosNivelSemana.style.display = "block";
+                        
+                    }
+                    else{
+                        img2.style.display = "block";
+                        img2.setAttribute("src",'data:image/png;base64,'+imgNivelesSemana);                        
+                    }    
+                    
+                    var imgNivelesMes = data.imagenNivelesMes 
+                    if(imgNivelesMes=="SinDatos"){
+                        sinDatosNivelMes.style.display = "block";
+                        
+                    }
+                    else{
+                        img3.style.display = "block";
+                        img3.setAttribute("src",'data:image/png;base64,'+imgNivelesMes);                        
+                    }   
+
+                }
+            });
+
+
+        }
+
+    </script>
+
+</head>
+
+<body>
+
+    <div class="row" style="background-color: rgb(123, 138, 139); padding-left: 25px;">
+        <div class="col-1"><img src="{{ url_for('static', filename='logo.png') }}" alt=""
+                style="width: 50px; margin-left: 10px; padding-top: 10px;"></div>
+        <div style="padding-top: 10px; color: white;">
+            <h2>Gestión de Riesgos ruta nacional 38</h2>
+        </div>
+    </div>
+
+    <br>
+    <div class="container">
+        <div>
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link" href="/novedades">Novedades</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/ultimas24hs">Alertas en las últimas 24 hs</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link active" href="#">Informes</a>
+                </li>
+                <!-- <li class="nav-item ">
+                    <a class="nav-link" href="/informesPorTramo">Buscador</a>
+                </li> -->
+
+            </ul>
+        </div>
+        <br>
+        <br>
+
+        <div class="row">
+            <div class="col-8">
+                <h3 style="text-decoration:underline">Informes por Tipo de Riesgo</h3>
+            </div>
+            <div class="col-2">
+                <a href="/informes" class="btn btn-info" style="margin-top: -10px;">Informes Generales</a>
+            </div>
+            <div class="col-2">
+                <a href="/informesPorTramo" class="btn btn-danger" style="margin-top: -10px;">Informes por Tramo</a>
+            </div>
+        </div>
+        <br>
+        <br>
+        <div class="form-group row">
+            <div class="col-3">
+                <select class="custom-select" style="width:230px" id="tipo">
+                    <option selected value="-">Seleccione el Tipo de Riesgo</option>
+                    <option value="niebla">Niebla</option>
+                    <option value="lluvia">Lluvia</option>
+                    <option value="humo">Humo</option>
+                    <option value="viento">Viento</option>
+                    <option value="animales">Animales</option>
+                    <option value="vehiculos">Vehículos lentos</option>
+                </select>
+            </div>
+
+            <div class="col-1">
+                <label class="col-form-label" for="inputDefault">Desde: </label></div>
+            <div class="col-3">
+                <input type="datetime-local" style="margin-left:-40px" class="form-control" placeholder="Default input"
+                    id="desde">
+            </div>
+            <div class="col-1">
+                <label class="col-form-label" for="inputDefault" style="margin-left:-40px">Hasta: </label></div>
+            <div class="col-3">
+                <input type="datetime-local" style="margin-left:-80px" class="form-control" placeholder="Default input"
+                    id="hasta">
+                
+            </div>
+            <div class="col-1">
+                <button type="button" class="btn btn-primary" style="margin-left:-60px" onclick="actualizar()">Actualizar</button>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-4">
+                <div class="card border-light mb-3" style="max-width: 20rem;">
+                    <div class="card-header">Distribución por nivel de riesgo</div>
+                    <h4 id="sinDatosNivel" style="display: none">No hay datos para ese periodo de tiempo</h4>
+                    <img class="card-img-top" src="" id="img0" alt="alt" style=" display: none; ">             
+                </div>
+
+            </div>
+            <div class="col-8">
+                <div class="card border-light mb-3">
+                    <div class="card-header">Distribución por tramos</div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            <!-- <img src="mapa.png" alt=""
+                                style="width: 70%; text-align: center; margin-left: 50px; padding-top: 10px;"> --></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-4">
+                <div class="card border-light mb-3" style="max-width: 20rem;">
+                    <div class="card-header">Alertas por nivel de riesgo según día de la semana</div>
+                    <h4 id="sinDatosNivelSemana" style="display: none">No hay datos para ese periodo de tiempo</h4>
+                    <img class="card-img-top" src="" id="img2" alt="alt" style=" display: none; "> 
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card border-light mb-3" style="max-width: 20rem;">
+                    <div class="card-header">Alertas por nivel de riesgo según momento del día</div>
+                    <div class="card-body">
+
+                        <p class="card-text"><!-- <img src="tipodia.png" alt=""
+                                style="width: 90%; margin-left: 20px; padding-top: 10px;"> --></p>
+                    </div>
+                </div>
+            </div>
+            <div class="card border-light mb-3" style="max-width: 20rem;">
+                <div class="card-header">Alertas por nivel de riesgo según mes del año</div>
+                <h4 id="sinDatosNivelMes" style="display: none">No hay datos para ese periodo de tiempo</h4>
+                    <img class="card-img-top" src="" id="img3" alt="alt" style=" display: none; "> 
+            </div>
+        </div>
+
+        <br>
+
+        <br>
+</body>
+
+</html>

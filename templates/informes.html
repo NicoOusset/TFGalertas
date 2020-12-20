@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.css') }}">
+    <script src="{{ url_for('static', filename='jquery.js') }}"></script>
+    <title>Alertas Ruta 38</title>
+
+    <script>
+        function actualizar(){
+            var desde = document.getElementById("desde").value;
+            var hasta = document.getElementById("hasta").value;
+            
+            
+            var img0 = document.getElementById("img0")
+            img0.style.display = "none";
+            var img1 = document.getElementById("img1")
+            img1.style.display = "none";
+
+            var sinDatosTipo = document.getElementById("sinDatosTipo")
+            sinDatosTipo.style.display = "none";
+            var sinDatosNivel = document.getElementById("sinDatosNivel")
+            sinDatosNivel.style.display = "none";
+
+            if(desde==""){
+                alert("Debe seleccionar la fecha Desde");
+                return
+            }
+            if(hasta==""){
+                alert("Debe seleccionar la fecha Hasta");
+                return
+            }
+
+            if (desde > hasta) {
+                  alert("La fecha desde debe ser menor que la fecha hasta");
+                  return
+            }
+
+            req = $.ajax({
+                url: '/estadisticasGenerales',
+                type: 'POST',
+                data: { 'desde':desde, 'hasta':hasta }
+            });
+
+            req.done(function (data) {
+                if (data.result == "error") {
+                    alert(data.error);
+                    return
+                }
+                else {      
+
+                    var imgTipos = data.imagenTipos   
+                    if(imgTipos=="SinDatos"){
+                        sinDatosTipo.style.display = "block";
+                    }
+                    else{
+                        img0.style.display = "block";
+                        img0.setAttribute("src",'data:image/png;base64,'+imgTipos);
+                        
+                    }                 
+                    
+                    var imgNiveles = data.imagenNiveles  
+                    if(imgNiveles=="SinDatos"){
+                        sinDatosNivel.style.display = "block";
+                        
+                    }
+                    else{
+                        img1.style.display = "block";
+                        img1.setAttribute("src",'data:image/png;base64,'+imgNiveles);                        
+                    }                                                        
+
+                }
+            });
+
+
+        }
+
+
+    </script>
+
+
+</head>
+
+<body>
+
+    <div class="row" style="background-color: rgb(123, 138, 139); padding-left: 25px;">
+        <div class="col-1"><img src="{{ url_for('static', filename='logo.png') }}" alt=""
+                style="width: 50px; margin-left: 10px; padding-top: 10px;"></div>
+        <div style="padding-top: 10px; color: white;">
+            <h2>Gestión de Riesgos ruta nacional 38</h2>
+        </div>
+    </div>
+
+    <br>
+    <div class="container">
+        <div>
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link" href="/novedades">Novedades</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/ultimas24hs">Alertas en las últimas 24 hs</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link active" href="#">Informes</a>
+                </li>
+                <!-- <li class="nav-item ">
+                    <a class="nav-link" href="/informesPorTramo">Buscador</a>
+                </li> -->
+
+            </ul>
+        </div>
+        <br>
+        <br>
+
+        <div class="row">
+            <div class="col-8">
+                <h3 style="text-decoration:underline">Informes Generales</h3>
+            </div>
+            <div class="col-2">
+                <a  href="/informesPorTipo" class="btn btn-info" style="margin-top: -10px;">Informes por Tipo</a>
+            </div>
+            <div class="col-2">
+                <a  href="/informesPorTramo" class="btn btn-danger" style="margin-top: -10px;">Informes por Tramo</a>
+            </div>
+        </div>
+        <br>
+        <br>
+
+        <div class="form-group row">
+            <div class="col-1">
+                <label class="col-form-label" for="inputDefault">Desde: </label></div>
+            <div class="col-3">
+                <input type="datetime-local" style="margin-left:-40px" class="form-control" placeholder="Default input"
+                    id="desde">
+            </div>
+            <div class="col-1"></div>
+            <div class="col-1">
+                <label class="col-form-label" for="inputDefault" style="margin-left:-100px">Hasta: </label></div>
+            <div class="col-3">
+                <input type="datetime-local" style="margin-left:-120px" class="form-control" placeholder="Default input"
+                    id="hasta">
+            </div>
+            <div class="col-3">
+                <button type="button" class="btn btn-primary" style="margin-left:-100px" onclick="actualizar()">Actualizar</button>
+            </div>
+
+        </div>
+        <br>
+       
+        <div class="row">
+            <div class="col-6">
+                <div class="card border-light mb-3">
+                    <div class="card-header">Distribución por tipo</div>
+                        <h4 id="sinDatosTipo" style="display: none">No hay datos para ese periodo de tiempo</h4>
+                        <img src="" id="img0" alt="algo" style="display: none;">
+                </div>
+            </div>
+
+            <div class="col-6">
+                <div class="card border-light mb-3">
+                    <div class="card-header">Distribución por nivel de riesgo</div> 
+                        <h4 id="sinDatosNivel" style="display: none">No hay datos para ese periodo de tiempo</h4>
+                        <img src="" id="img1" alt="algo" style="display: none;">
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

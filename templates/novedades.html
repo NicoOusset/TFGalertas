@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.css') }}">
+    <script src="{{ url_for('static', filename='jquery.js') }}"></script>
+    <title>Alertas Ruta 38</title>
+
+  
+  <script>
+
+    var titulos = ['descripcion','tipo','tramo','nivel','fecha_inicio']
+
+    $(function () {
+      window.setInterval(function () {
+        tiempoReal()
+      }, 4000)
+
+      function tiempoReal() {
+        $.ajax({
+          url: '/UltimasAlertas',
+          type: 'POST',
+          dataType: 'json',
+          success: function (data) {
+            //alert(data.alertas)
+            datos = data.alertas
+            datoss = JSON.parse(datos)
+            //alert(typeof(datos))
+            d1 = datoss[0]['nivel']
+            d2 = datoss[1]['nivel']
+            //alert(d1)
+            //document.getElementById("alerta").innerHTML = d1
+            //document.getElementById("alerta2").innerHTML = d2
+
+            $("#alertasDatos tr").remove(); 
+
+            for (var i = 0; i < datoss.length; i++) {
+              
+              var row$ = $('<tr/>');
+              for (var colIndex = 0; colIndex < 5; colIndex++) {
+                var cellValue = datoss[i][titulos[colIndex]];
+
+               /* if(titulos[colIndex]=='fecha_inicio'){
+                  cellValue = datoss[i]['fecha_inicio']['$date'];
+                }*/
+          
+                if (cellValue == null) cellValue = "";
+                
+
+                if(cellValue=='extrema'){
+                  cellValue= cellValue+ ' <img src="{{ url_for("static", filename="extrema.png") }}" style="width: 25px;" alt="">';
+                }
+                row$.append($('<td/>').html(cellValue));
+              }
+              $('#alertasTabla').append(row$);
+            }
+
+          }
+        });
+
+      }
+    })
+  </script>
+
+</head>
+
+<body>
+
+  <div class="row" style="background-color: rgb(123, 138, 139); padding-left: 25px;">
+    <div class="col-1"><img src="{{ url_for('static', filename='logo.png') }}" alt=""
+        style="width: 50px; margin-left: 10px; padding-top: 10px;"></div>
+    <div style="padding-top: 10px; color: white;">
+      <h2>Gestión de Riesgos ruta nacional 38</h2>
+    </div>
+  </div>
+
+
+  <br>
+  <div class="container">
+    <div>
+      <ul class="nav nav-tabs">
+          <li class="nav-item">
+              <a class="nav-link active" href="#">Novedades</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="/ultimas24hs" >Alertas en las últimas 24 hs</a>
+          </li>
+          <li class="nav-item ">
+              <a class="nav-link " href="/informes">Informes</a>
+          </li>
+          <!-- <li class="nav-item ">
+              <a class="nav-link" href="/informesPorTramo">Buscador</a>
+          </li> -->
+      </ul>
+  </div>
+    <br>
+    <br>
+    <table class="table table-striped" id="alertasTabla">
+      <thead>
+        <tr class="table-primary">
+          <td>Descripción</td>
+          <td>Tipo</td>
+          <td>Tramo</td>
+          <td>Nivel de riesgo</td>
+          <td>Fecha y Hora</td>
+        </tr>
+      </thead>
+      <tbody id="alertasDatos">
+
+      </tbody>
+    </table>
+
+  </div>
+  
+</body>
+
+</html>

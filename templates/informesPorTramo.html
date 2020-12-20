@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.css') }}">
+    <script src="{{ url_for('static', filename='jquery.js') }}"></script>
+    <title>Alertas Ruta 38</title>
+
+
+</head>
+
+<body>
+
+    <div class="row" style="background-color: rgb(123, 138, 139); padding-left: 25px;">
+        <div class="col-1"><img src="{{ url_for('static', filename='logo.png') }}" alt=""
+                style="width: 50px; margin-left: 10px; padding-top: 10px;"></div>
+        <div style="padding-top: 10px; color: white;">
+            <h2>Gestión de Riesgos ruta nacional 38</h2>
+        </div>
+    </div>
+
+    <br>
+    <div class="container">
+        <div>
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link" href="/novedades">Novedades</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/ultimas24hs">Alertas en las últimas 24 hs</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link active" href="#">Informes</a>
+                </li>
+                <!-- <li class="nav-item ">
+                    <a class="nav-link" href="/informesPorTramo">Buscador</a>
+                </li> -->
+
+            </ul>
+        </div>
+        <br>
+        <br>
+
+        <div class="row">
+            <div class="col-8">
+                <h3 style="text-decoration:underline">Informes por Tramo de la Ruta</h3>
+            </div>
+            <div class="col-2">
+                <a href="/informes" class="btn btn-info" style="margin-top: -10px;">Informes Generales</a>
+            </div>
+            <div class="col-2">
+                <a href="/informesPorTipo" class="btn btn-danger" style="margin-top: -10px;">Informes por Tipo</a>
+            </div>
+        </div>
+        <br>
+        <br>
+        <div class="form-group row">
+            <div class="col-3">
+                <select class="custom-select" style="width:230px">
+                    <option selected value="-">Seleccione el Tramo</option>
+                    <option value="Rumi Punco - Pueblo Viejo">Rumi Punco - Pueblo Viejo</option>
+                    <option value="Pueblo Viejo - Rio el Sueño">Pueblo Viejo - Rio el Sueño</option>
+                    <option value="Rio el Sueño - Huasa Pampa">Rio el Sueño - Huasa Pampa</option>
+                    <option value="Huasa Pampa - Río Marapa">Huasa Pampa - Río Marapa</option>
+                    <option value="Río Marapá - Villa Belgrano">Río Marapá - Villa Belgrano</option>
+                    <option value="Villa Belgrano - Aguilares">Villa Belgrano - Aguilares</option>
+                    <option value="Aguilares - Concepción">Aguilares - Concepción</option>
+                    <option value="Concepción - Río Seco">Concepción - Río Seco</option>
+                    <option value="Río Seco - Monteros">Río Seco - Monteros</option>
+                    <option value="Monteros - Río Caspichango">Monteros - Río Caspichango</option>
+                    <option value="Río Caspichango - Intersección ruta 322">Río Caspichango - Intersección ruta 322</option>
+                    <option value="intersección ruta 322 - intersección ruta 321">intersección ruta 322 - intersección ruta 321</option>
+                    <option value="intersección ruta 321 - S M de Tuc">intersección ruta 321 - S M de Tuc</option>
+
+                </select>
+            </div>
+
+            <div class="col-1">
+                <label class="col-form-label" for="inputDefault">Desde: </label></div>
+            <div class="col-3">
+                <input type="datetime-local" style="margin-left:-40px" class="form-control" placeholder="Default input"
+                    id="inputDefault">
+            </div>
+            <div class="col-1">
+                <label class="col-form-label" for="inputDefault" style="margin-left:-40px">Hasta: </label></div>
+            <div class="col-3">
+                <input type="datetime-local" style="margin-left:-80px" class="form-control" placeholder="Default input"
+                    id="inputDefault">
+            </div>
+            <div class="col-1">
+                <button type="button" class="btn btn-primary" style="margin-left:-60px">Actualizar</button>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+
+
+            <div class="col-6">
+                <div class="card border-light mb-3">
+                    <div class="card-header">Distribución por tipo</div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            <!-- <img src="barrastramo.png" alt=""
+                                style="width: 60%; text-align: center; margin-left: 50px; padding-top: 10px;"> -->
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card border-light mb-3" style="max-width: 20rem;">
+                    <div class="card-header">Distribución por tipo</div>
+                    <div class="card-body">
+
+                        <p class="card-text"><!-- <img src="circulartramo.png" alt=""
+                                style="width: 100%; margin-left: 20px; padding-top: 10px;"> --></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr style="border:15px;  height: 3px;   width: 100%;    background-color: grey;">
+
+
+        <div class="form-group row">
+            <div class="col-4">
+                <select class="custom-select" style="width:230px">
+                    <option selected="">Seleccione el Tipo de Riesgo</option>
+                    <option value="1">Niebla</option>
+                    <option value="2">Lluvia</option>
+                    <option value="3">Humo</option>
+                    <option value="4">Viento</option>
+                    <option value="5">Animales</option>
+                    <option value="6">Vehículos lentos</option>
+                </select>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <div class="card border-light mb-3" style="max-width: 20rem;">
+                    <div class="card-header">Alertas por nivel de riesgo según mes del año</div>
+                    <div class="card-body">
+
+                        <p class="card-text"><!-- <img src="tramomes.png" alt=""
+                                style="width: 90%; margin-left: 20px; padding-top: 10px;"> --></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card border-light mb-3" style="max-width: 20rem;">
+                    <div class="card-header">Alertas por nivel de riesgo según día de la semana</div>
+                    <div class="card-body">
+
+                        <p class="card-text"><!-- <img src="tramosemana.png" alt=""
+                                style="width: 90%; margin-left: 20px; padding-top: 10px;"> --></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card border-light mb-3" style="max-width: 20rem;">
+                    <div class="card-header">Alertas por nivel de riesgo según momento del día</div>
+                    <div class="card-body">
+
+                        <p class="card-text"><!-- <img src="tramodia.png" alt=""
+                                style="width: 90%; margin-left: 20px; padding-top: 10px;"> --></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br>
+</body>
+
+</html>
