@@ -6,6 +6,7 @@ def NivelRiesgoLluvia(milimetrosLluvia):
 
     if(milimetrosLluvia!=None):
 
+        milimetrosLluvia=float(milimetrosLluvia)
         if(milimetrosLluvia < 3):
             nivel = "nulo"
         if(milimetrosLluvia >= 3 and milimetrosLluvia < 16):
@@ -26,9 +27,10 @@ def NivelRiesgoLluvia(milimetrosLluvia):
 def NivelRiesgoViento(velocidadViento):
     
     nivel = "";
-
+    
     if(velocidadViento!=None):
 
+        velocidadViento=float(velocidadViento)
         if(velocidadViento < 29):
             nivel = "nulo"
         if(velocidadViento >= 29 and velocidadViento < 39):
@@ -53,6 +55,11 @@ def NivelRiesgoNiebla(temperatura, velocidadViento, presion, puntoRocio):
     if(temperatura!=None and velocidadViento!=None and presion!=None and puntoRocio!=None):
 
         nivel = "nulo"
+
+        presion=float(presion)
+        velocidadViento=float(velocidadViento)
+        temperatura=float(temperatura)
+        puntoRocio=float(puntoRocio)
 
         if(presion > 1020):
             if(velocidadViento < 10):

@@ -55,9 +55,8 @@ class Alerta:
 
     
     def inactivarAlerta(idAlerta, fecha):
-
         cliente[db]['Alertas'].update_one({'_id': idAlerta}, {'$set': {'activa': 'False', 'fecha_fin': fecha}})
-
+          
 
     def buscarUltimasAlertas():
         
@@ -157,6 +156,36 @@ class Alerta:
         print(resultados)
         return resultados
 
+    def informePorTipoNivelMes(tipo, desde, hasta):
+        
+        tipoAlerta = tipo
+        fechaDesde = datetime.strptime(desde, '%Y-%m-%dT%H:%M')
+        fechaHasta = datetime.strptime(hasta, '%Y-%m-%dT%H:%M')
+
+       
+        ver = cliente[db]['Alertas'].aggregate([
+                                                { "$match" : {'fecha_inicio': {'$lt': fechaHasta, '$gte': fechaDesde} , 'tipo': tipoAlerta } },
+                                                { "$group" : {"_id": { "day" : {"$month":"$fecha_inicio"},"nivel":"$nivel"}, "total" : {"$sum":1} } } , 
+                                                { "$sort"  : {"_id.day":1} }
+                                            ])
+
+        meses  = []
+        niveles = []
+        cantidades = []
+        resultados = []
+
+        for a in ver:
+            m = a['_id']['day']
+            n = a['_id']['nivel']
+            c = a['total']
+            meses.append(m)
+            niveles.append(n)
+            cantidades.append(c)
+            #resultados.append(a)
+
+        resultados = [meses, niveles, cantidades]
+        print(resultados)
+        return resultados
 
     def informePorTipoNivelSemana(tipo, desde, hasta):
         
@@ -190,15 +219,72 @@ class Alerta:
         return resultados
 
 
-    def informePorTipoNivelMes(tipo, desde, hasta):
+    def informePorTramoNivel(tramo, desde, hasta):
         
+        tramoRuta = tramo
+        fechaDesde = datetime.strptime(desde, '%Y-%m-%dT%H:%M')
+        fechaHasta = datetime.strptime(hasta, '%Y-%m-%dT%H:%M')
+
+       
+        ver = cliente[db]['Alertas'].aggregate([
+                                                { "$match" : {'fecha_inicio': {'$lt': fechaHasta, '$gte': fechaDesde} , 'tramo': tramoRuta } },
+                                                { "$group" : {"_id":"$nivel", "total" : {"$sum":1} } } , 
+                                                { "$sort"  : {"_id":1} }
+                                            ])
+
+        niveles = []
+        cantidades = []
+        resultados = []
+
+        for a in ver:
+            n = a['_id']
+            c = a['total']
+            niveles.append(n)
+            cantidades.append(c)
+
+        resultados = [niveles, cantidades]
+        print(resultados)
+        return resultados
+
+
+    def informeTramoTipos(tramo, desde, hasta):
+        
+        tramoRuta = tramo
+        fechaDesde = datetime.strptime(desde, '%Y-%m-%dT%H:%M')
+        print(fechaDesde)
+        fechaHasta = datetime.strptime(hasta, '%Y-%m-%dT%H:%M')
+        print(fechaHasta)
+       
+        ver = cliente[db]['Alertas'].aggregate([
+                                                { "$match" : {'fecha_inicio': {'$lt': fechaHasta, '$gte': fechaDesde} , 'tramo': tramoRuta } },
+                                                { "$group" : {"_id":"$tipo", "total" : {"$sum":1} } } , 
+                                                { "$sort"  : {"_id":1} }
+                                            ])
+
+        tipos = []
+        cantidades = []
+        resultados = []
+
+        for a in ver:
+            n = a['_id']
+            c = a['total']
+            tipos.append(n)
+            cantidades.append(c)
+
+        resultados = [tipos, cantidades]
+        print(resultados)
+        return resultados
+
+    def informeTramoTipoNivelMes(tramo, tipo, desde, hasta):
+        
+        tramoRuta  = tramo
         tipoAlerta = tipo
         fechaDesde = datetime.strptime(desde, '%Y-%m-%dT%H:%M')
         fechaHasta = datetime.strptime(hasta, '%Y-%m-%dT%H:%M')
 
        
         ver = cliente[db]['Alertas'].aggregate([
-                                                { "$match" : {'fecha_inicio': {'$lt': fechaHasta, '$gte': fechaDesde} , 'tipo': tipoAlerta } },
+                                                { "$match" : {'fecha_inicio': {'$lt': fechaHasta, '$gte': fechaDesde} , 'tramo': tramoRuta , 'tipo': tipoAlerta } },
                                                 { "$group" : {"_id": { "day" : {"$month":"$fecha_inicio"},"nivel":"$nivel"}, "total" : {"$sum":1} } } , 
                                                 { "$sort"  : {"_id.day":1} }
                                             ])
@@ -221,15 +307,67 @@ class Alerta:
         print(resultados)
         return resultados
 
-#a = Alerta.informePorTipoNivelMes("lluvia",'2020-09-01T19:02','2020-11-21T19:02')
-#r = Alerta.buscarUltimasAlertas() 
+    
+    def informeTramoTipoNivelSemana(tramo, tipo, desde, hasta):
+        
+        tramoRuta  = tramo
+        tipoAlerta = tipo
+        fechaDesde = datetime.strptime(desde, '%Y-%m-%dT%H:%M')
+        fechaHasta = datetime.strptime(hasta, '%Y-%m-%dT%H:%M')
 
-'''
-ultAlertas = list(r)
-datosJson = dumps(ultAlertas)
-print(datosJson)
-'''
-#a = Alerta('niebla','muy fuerte', 'aguilares-concepcion', 'moderado')
-#a.cargarAlerta()
+       
+        ver = cliente[db]['Alertas'].aggregate([
+                                                { "$match" : {'fecha_inicio': {'$lt': fechaHasta, '$gte': fechaDesde} , 'tramo': tramoRuta , 'tipo': tipoAlerta } },
+                                                { "$group" : {"_id": { "day" : {"$dayOfWeek":"$fecha_inicio"},"nivel":"$nivel"}, "total" : {"$sum":1} } } , 
+                                                { "$sort"  : {"_id.day":1} }
+                                            ])
 
-#Alerta.buscarAlertaActiva(cliente,db,"lluvia","concepcion-rio")
+        dias  = []
+        niveles = []
+        cantidades = []
+        resultados = []
+
+        for a in ver:
+            d = a['_id']['day']
+            n = a['_id']['nivel']
+            c = a['total']
+            dias.append(d)
+            niveles.append(n)
+            cantidades.append(c)
+           
+
+        resultados = [dias, niveles, cantidades]
+        print(resultados)
+        return resultados
+
+
+
+    def buscarAlertas(tramo, tipo, desde, hasta):
+        
+        tramoRuta  = tramo
+        tipoAlerta = tipo
+    
+        if desde == "":
+            fechaDesde = datetime(2020, 1, 1)
+        else:            
+            fechaDesde = datetime.strptime(desde, '%Y-%m-%dT%H:%M')
+
+        if hasta == "":
+            
+            fechaHasta = datetime(2220, 1, 1)
+        else:            
+            fechaHasta = datetime.strptime(hasta, '%Y-%m-%dT%H:%M')
+        
+        print(fechaDesde)   
+        print(fechaHasta)
+        
+
+        ttt = ".*"+tipoAlerta+".*"
+        mmm=".*"+tramoRuta+".*"
+
+        alertas = cliente[db]['Alertas'].find({'tipo': { "$regex": ttt }  ,'tramo': { "$regex": mmm }, 'fecha_inicio': {'$lt': fechaHasta, '$gte': fechaDesde} }).sort("fecha_inicio", pymongo.ASCENDING)       
+        #"/.*"+tipoAlerta+".*/i"
+
+        return alertas       
+        
+        

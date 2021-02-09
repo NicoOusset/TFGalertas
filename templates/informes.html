@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
     <script src="{{ url_for('static', filename='jquery.js') }}"></script>
     <title>Alertas Ruta 38</title>
 
@@ -77,9 +78,25 @@
 
         }
 
+        function AgrandarImagen(texto,imagen) {
+            document.getElementById("modal").style.display = "block";
+            document.getElementById("modalTexto").innerHTML=texto;
+            var modalImagen = document.getElementById("modalImagen");
+            var agrandarImagen = document.getElementById(imagen).src;
+            modalImagen.setAttribute("src",agrandarImagen);
+        }
+
+        function cerrarModal() {
+            document.getElementById("modal").style.display = "none";
+        }
+
+        window.onclick = function (event) {
+            if (event.target == document.getElementById("modal")) {
+                document.getElementById("modal").style.display = "none";
+            }
+        }
 
     </script>
-
 
 </head>
 
@@ -106,9 +123,9 @@
                 <li class="nav-item ">
                     <a class="nav-link active" href="#">Informes</a>
                 </li>
-                <!-- <li class="nav-item ">
-                    <a class="nav-link" href="/informesPorTramo">Buscador</a>
-                </li> -->
+                <li class="nav-item ">
+                    <a class="nav-link" href="/buscador">Buscador</a>
+                </li> 
 
             </ul>
         </div>
@@ -150,25 +167,44 @@
         </div>
         <br>
        
-        <div class="row">
+        <div class="row" style="text-align: center;">
             <div class="col-6">
                 <div class="card border-light mb-3">
                     <div class="card-header">Distribución por tipo</div>
-                        <h4 id="sinDatosTipo" style="display: none">No hay datos para ese periodo de tiempo</h4>
-                        <img src="" id="img0" alt="algo" style="display: none;">
+                        <h6 id="sinDatosTipo" style="display: none">No hay datos para ese periodo de tiempo</h6>
+                        <img src="" id="img0" alt="algo" style="display: none;" onclick="AgrandarImagen('Distribución por tipo','img0')">
                 </div>
             </div>
 
             <div class="col-6">
                 <div class="card border-light mb-3">
                     <div class="card-header">Distribución por nivel de riesgo</div> 
-                        <h4 id="sinDatosNivel" style="display: none">No hay datos para ese periodo de tiempo</h4>
-                        <img src="" id="img1" alt="algo" style="display: none;">
+                        <h6 id="sinDatosNivel" style="display: none">No hay datos para ese periodo de tiempo</h6>
+                        <img src="" id="img1" alt="algo" style="display: none;" onclick="AgrandarImagen('Distribución por nivel de riesgo','img1')">
                 </div>
             </div>
         </div>
 
     </div>
+
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <header>
+                <button class="close" onclick="cerrarModal()" style="font-size: small;">x</button>
+                <h4 style="text-align: center; margin-bottom: 20px; text-decoration: underline;" id="modalTexto"> 
+                </h4>
+
+            </header>
+
+           <div style="text-align: center; color:black ;">
+                <img src="" id="modalImagen" alt="algo" >
+            </div> 
+
+        </div>
+    </div>
+
+
+
 </body>
 
 </html>

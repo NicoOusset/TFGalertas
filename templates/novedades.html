@@ -24,15 +24,9 @@
           type: 'POST',
           dataType: 'json',
           success: function (data) {
-            //alert(data.alertas)
+            
             datos = data.alertas
             datoss = JSON.parse(datos)
-            //alert(typeof(datos))
-            d1 = datoss[0]['nivel']
-            d2 = datoss[1]['nivel']
-            //alert(d1)
-            //document.getElementById("alerta").innerHTML = d1
-            //document.getElementById("alerta2").innerHTML = d2
 
             $("#alertasDatos tr").remove(); 
 
@@ -90,9 +84,9 @@
           <li class="nav-item ">
               <a class="nav-link " href="/informes">Informes</a>
           </li>
-          <!-- <li class="nav-item ">
-              <a class="nav-link" href="/informesPorTramo">Buscador</a>
-          </li> -->
+          <li class="nav-item ">
+            <a class="nav-link" href="/buscador">Buscador</a>
+        </li> 
       </ul>
   </div>
     <br>

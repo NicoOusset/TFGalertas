@@ -26,6 +26,10 @@ def index():
 def novedades():
     return render_template('novedades.html')
 
+@app.route('/buscador', methods=['POST', 'GET'])
+def buscador():
+    return render_template('buscador.html')
+
 @app.route('/ultimas24hs', methods=['POST', 'GET'])
 def ultimas24hs():
     return render_template('ultimas24hs.html')
@@ -118,29 +122,92 @@ def estadisticasPorTipo():
 
         return jsonify({'result':'success', 'imagenNiveles': graficosNiveles , 'imagenNivelesSemana': graficosNivelesSemana, 'imagenNivelesMes': graficosNivelesMes })
 
+@app.route('/estadisticasPorTramo', methods=['POST'])
+def estadisticasPorTramo():
+    if request.method=='POST':
+        tramo=request.form.get("tramo")  
+        desde=request.form.get("desde")  
+        hasta=request.form.get("hasta")  
+        try:
+            print(desde)
+            print(hasta)
+
+            graficosTramosTipos = graficos.informeTramoTipos(tramo,desde,hasta)
+            graficosNiveles = graficos.informeTramoNivel(tramo,desde,hasta)  
+            #graficosNivelesMes = graficos.informeTipoNivelMes(tipo,desde,hasta)  
+
+        except Exception as e:
+            error=str(e)
+            return jsonify({'result':'error','error':error})
+
+        return jsonify({'result':'success', 'imagenTramoTipos': graficosTramosTipos, 'imagenNiveles': graficosNiveles   })
+
+
+@app.route('/estadisticasPorTramoTipo', methods=['POST'])
+def estadisticasPorTramoTipo():
+    if request.method=='POST':
+        tramo=request.form.get("tramo")  
+        tipo=request.form.get("tipo") 
+        desde=request.form.get("desde")  
+        hasta=request.form.get("hasta")  
+        try:
+           
+            graficosTramosTiposMes = graficos.informeTramoTipoNivelMes(tramo,tipo,desde,hasta) 
+            graficosTramosTiposSemana = graficos.informeTramoTipoNivelSemana(tramo,tipo,desde,hasta)             
+
+        except Exception as e:
+            error=str(e)
+            return jsonify({'result':'error','error':error})
+
+        return jsonify({'result':'success', 'imagenTramoTiposMes': graficosTramosTiposMes, 'imagenTramoTiposSemana': graficosTramosTiposSemana   })
+
+
+@app.route('/estadisticasUltimas24', methods=['POST'])
+def estadisticasUltimas24():
+    if request.method=='POST':
+
+        tramo=request.form.get("tramo")           
+        try:
+            graficos24Lluvia = graficos.informe24Lluvia(tramo) 
+            graficos24Niebla = graficos.informe24Niebla(tramo) 
+            graficos24Humo = graficos.informe24Humo(tramo) 
+            graficos24Viento = graficos.informe24Viento(tramo) 
+            graficos24Animales = graficos.informe24Animales(tramo) 
+            graficos24Vehiculos = graficos.informe24Vehiculos(tramo) 
+
+
+        except Exception as e:
+            error=str(e)
+            return jsonify({'result':'error','error':error})
+
+        return jsonify({'result':'success', 'imagenLluvia': graficos24Lluvia, 'imagenNiebla': graficos24Niebla, 'imagenHumo': graficos24Humo, 'imagenViento': graficos24Viento, 'imagenAnimales': graficos24Animales, 'imagenVehiculos': graficos24Vehiculos   })
+
+
+@app.route('/buscadorAlertas', methods=['POST'])
+def buscadorAlertas():
+    tramo=request.form.get("tramo")  
+    tipo=request.form.get("tipo") 
+    desde=request.form.get("desde")  
+    hasta=request.form.get("hasta")   
+    try:
+
+        ultAlertas = list(Alerta.buscarAlertas(tramo, tipo, desde, hasta))
+        
+        for i in ultAlertas:
+            
+            f = (i['fecha_inicio'])
+            i['fecha_inicio'] = "{:02d}-{:02d}-{} {:02d}:{:02d}:{:02d}".format(f.day, f.month, f.year, f.hour, f.minute, f.second)
+
+        datosJson = dumps(ultAlertas)
+
+    except Exception as e:
+        error=str(e)
+        return jsonify({'result':'error','error':error})
+
+    return jsonify({'result':'success', 'alertas': datosJson})
 
 
 if __name__ == "__main__":
     app.run(debug=True,
             port=5000)
        
-
-
-
-
-
-
-
-
-#modificar = client[MONGODB_DATABASE]['Alertas'].update_one({'tramo': 'aguilares-consepcion'}, {'$set': {'tramo': 'aguilares-concepcion'}})
-
-#a = Alerta('humo','no se ve nada', 'concepcion-rio', 'extrema')
-#a.cargarAlerta(cliente,db)
-
-#resultado = client[MONGODB_DATABASE]['Alertas'].find({'tramo': 'aguilares-concepcion'})
-'''
-resultado = Alerta.buscarAlertas(cliente,db)
-
-for r in resultado:
-    print(r['tipo'])
-'''    

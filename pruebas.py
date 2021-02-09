@@ -79,3 +79,12 @@ tiempoReal(50,b,'concepcion-rio')
 tiempoReal(65,b,'concepcion-rio')
 
 '''
+
+
+def actualizarAlerta():
+        cliente[db]['Alertas'].update_many({
+            'tramo': "concepcion-rio"
+        }, {'$set':
+        {
+            'tramo': "Concepcion - Rio Seco"
+        }})

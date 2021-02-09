@@ -5,9 +5,127 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
     <script src="{{ url_for('static', filename='jquery.js') }}"></script>
     <title>Alertas Ruta 38</title>
 
+    <script>
+        function actualizar() {
+
+            var tramo = document.getElementById("tramo").value;
+
+            var img0 = document.getElementById("img0")
+            img0.style.display = "none";
+            var img1 = document.getElementById("img1")
+            img1.style.display = "none";
+            var img2 = document.getElementById("img2")
+            img2.style.display = "none";
+            var img3 = document.getElementById("img3")
+            img3.style.display = "none";
+            var img4 = document.getElementById("img4")
+            img4.style.display = "none";
+            var img5 = document.getElementById("img5")
+            img5.style.display = "none";
+
+            var sinDatosLluvia = document.getElementById("sinDatosLluvia")
+            sinDatosLluvia.style.display = "none";
+            var sinDatosNiebla = document.getElementById("sinDatosNiebla")
+            sinDatosNiebla.style.display = "none";
+            var sinDatosHumo = document.getElementById("sinDatosHumo")
+            sinDatosHumo.style.display = "none";
+            var sinDatosViento = document.getElementById("sinDatosViento")
+            sinDatosViento.style.display = "none";
+            var sinDatosAnimales = document.getElementById("sinDatosAnimales")
+            sinDatosAnimales.style.display = "none";
+            var sinDatosVehiculos = document.getElementById("sinDatosVehiculos")
+            sinDatosVehiculos.style.display = "none";
+
+
+            if (tramo == "-") {
+                alert("Debe seleccionar un tramo de la ruta");
+                return
+            }
+            
+            req = $.ajax({
+                url: '/estadisticasUltimas24',
+                type: 'POST',
+                data: { 'tramo': tramo }
+            });
+
+            req.done(function (data) {
+                if (data.result == "error") {
+                    alert(data.error);
+                    return
+                }
+                else {
+
+                    var imgLluvia = data.imagenLluvia
+                    if (imgLluvia == "SinDatos") {
+                        sinDatosLuvia.style.display = "block";
+                    }
+                    else {
+                        img0.style.display = "block";
+                        img0.setAttribute("src", 'data:image/png;base64,' + imgLluvia);
+
+                    }
+
+                    var imgNiebla = data.imagenNiebla
+                    if (imgNiebla == "SinDatos") {
+                        sinDatosNiebla.style.display = "block";
+                    }
+                    else {
+                        img1.style.display = "block";
+                        img1.setAttribute("src", 'data:image/png;base64,' + imgNiebla);
+
+                    }
+
+                    var imgHumo = data.imagenHumo 
+                    if (imgHumo == "SinDatos") {
+                        sinDatosHumo .style.display = "block";
+                    }
+                    else {
+                        img2.style.display = "block";
+                        img2.setAttribute("src", 'data:image/png;base64,' + imgHumo );
+
+                    }
+
+                    var imgViento = data.imagenViento
+                    if (imgViento == "SinDatos") {
+                        sinDatosViento.style.display = "block";
+                    }
+                    else {
+                        img3.style.display = "block";
+                        img3.setAttribute("src", 'data:image/png;base64,' + imgViento);
+
+                    }
+
+                    var imgAnimales = data.imagenAnimales
+                    if (imgAnimales == "SinDatos") {
+                        sinDatosAnimales.style.display = "block";
+                    }
+                    else {
+                        img4.style.display = "block";
+                        img4.setAttribute("src", 'data:image/png;base64,' + imgAnimales);
+
+                    }
+
+                    var imgVehiculos = data.imagenVehiculos
+                    if (imgVehiculos == "SinDatos") {
+                        sinDatosVehiculos.style.display = "block";
+                    }
+                    else {
+                        img5.style.display = "block";
+                        img5.setAttribute("src", 'data:image/png;base64,' + imgVehiculos);
+
+                    }
+
+                }
+            });
+
+
+        }
+
+    </script>
 
 </head>
 
@@ -34,106 +152,93 @@
                 <li class="nav-item ">
                     <a class="nav-link " href="/informes">Informes</a>
                 </li>
-                <!-- <li class="nav-item ">
-                    <a class="nav-link" href="/informesPorTramo">Buscador</a>
-                </li> -->
-
+                <li class="nav-item ">
+                    <a class="nav-link" href="/buscador">Buscador</a>
+                </li> 
             </ul>
         </div>
         <br>
         <br>
         <div class="form-group row">
             <div class="col-4">
-                <select class="custom-select" style="width:230px">
+                <select class="custom-select" style="width:230px" id="tramo">
                     <option selected value="-">Seleccione el Tramo</option>
                     <option value="Rumi Punco - Pueblo Viejo">Rumi Punco - Pueblo Viejo</option>
                     <option value="Pueblo Viejo - Rio el Sueño">Pueblo Viejo - Rio el Sueño</option>
                     <option value="Rio el Sueño - Huasa Pampa">Rio el Sueño - Huasa Pampa</option>
-                    <option value="Huasa Pampa - Río Marapa">Huasa Pampa - Río Marapa</option>
-                    <option value="Río Marapá - Villa Belgrano">Río Marapá - Villa Belgrano</option>
+                    <option value="Huasa Pampa - Rio Marapa">Huasa Pampa - Rio Marapa</option>
+                    <option value="Rio Marapa - Villa Belgrano">Rio Marapa - Villa Belgrano</option>
                     <option value="Villa Belgrano - Aguilares">Villa Belgrano - Aguilares</option>
-                    <option value="Aguilares - Concepción">Aguilares - Concepción</option>
-                    <option value="Concepción - Río Seco">Concepción - Río Seco</option>
-                    <option value="Río Seco - Monteros">Río Seco - Monteros</option>
-                    <option value="Monteros - Río Caspichango">Monteros - Río Caspichango</option>
-                    <option value="Río Caspichango - Intersección ruta 322">Río Caspichango - Intersección ruta 322</option>
-                    <option value="intersección ruta 322 - intersección ruta 321">intersección ruta 322 - intersección ruta 321</option>
-                    <option value="intersección ruta 321 - S M de Tuc">intersección ruta 321 - S M de Tuc</option>
+                    <option value="Aguilares - Concepcion">Aguilares - Concepcion</option>
+                    <option value="Concepcion - Rio Seco">Concepcion - Rio Seco</option>
+                    <option value="Rio Seco - Monteros">Rio Seco - Monteros</option>
+                    <option value="Monteros - Rio Caspichango">Monteros - Rio Caspichango</option>
+                    <option value="Rio Caspichango - Interseccion ruta 322">Rio Caspichango - Interseccion ruta 322
+                    </option>
+                    <option value="Interseccion ruta 322 - Interseccion ruta 321">Interseccion ruta 322 - Interseccion
+                        ruta 321</option>
+                    <option value="Interseccion ruta 321 - S M de Tuc">Interseccion ruta 321 - S M de Tuc</option>
 
                 </select>
             </div>
 
             <div class="col-2">
+                <!-- <button type="button" class="btn btn-primary" onclick="actualizar()">Actualizar</button> -->
                 <button type="button" class="btn btn-primary">Actualizar</button>
             </div>
         </div>
         <br>
-        <div class="row">
-
+        <div class="row" style="text-align: center;">
             <div class="col-4">
                 <div class="card border-light mb-3">
                     <div class="card-header">Lluvia</div>
-                    <div class="card-body">
-                        <p class="card-text">
-                            <!-- <img src="lineal.jpeg" alt="" style="width: 100%; padding-top: 10px;"> --></p>
-                    </div>
+                    <h6 id="sinDatosLluvia" style="display: none">No hay datos para ese periodo de tiempo</h6>
+                    <img class="card-img-top" src="" id="img0" alt="alt" style=" display: none; ">
                 </div>
+
             </div>
             <div class="col-4">
-                <div class="card border-light mb-3" style="max-width: 20rem;">
+                <div class="card border-light mb-3" >
                     <div class="card-header">Niebla</div>
-                    <div class="card-body">
+                    <h6 id="sinDatosNiebla" style="display: none">No hay datos para ese periodo de tiempo</h6>
+                    <img class="card-img-top" src="" id="img1" alt="alt" style=" display: none; ">
 
-                        <p class="card-text"><!-- <img src="lineal.jpeg" alt=""
-                                style="width: 100%; margin-left: 20px; padding-top: 10px;"> --></p>
-                    </div>
                 </div>
             </div>
             <div class="col-4">
-                <div class="card border-light mb-3" style="max-width: 20rem;">
+                <div class="card border-light mb-3" >
                     <div class="card-header">Humo</div>
-                    <div class="card-body">
+                    <h6 id="sinDatosHumo" style="display: none">No hay datos para ese periodo de tiempo</h6>
+                    <img class="card-img-top" src="" id="img2" alt="alt" style=" display: none; ">
 
-                        <p class="card-text"><!-- <img src="lineal.jpeg" alt=""
-                                style="width: 100%; margin-left: 20px; padding-top: 10px;"> --></p>
-                    </div>
                 </div>
             </div>
-
-
-
 
 
         </div>
-        <div class="row">
+        <div class="row" style="text-align: center;">
             <div class="col-4">
-                <div class="card border-light mb-3" style="max-width: 20rem;">
+                <div class="card border-light mb-3" >
                     <div class="card-header">Vientos</div>
-                    <div class="card-body">
+                    <h6 id="sinDatosViento" style="display: none">No hay datos para ese periodo de tiempo</h6>
+                    <img class="card-img-top" src="" id="img3" alt="alt" style=" display: none; ">
 
-                        <p class="card-text"><!-- <img src="lineal.jpeg" alt=""
-                                style="width: 90%; margin-left: 20px; padding-top: 10px;"> --></p>
-                    </div>
                 </div>
             </div>
             <div class="col-4">
-                <div class="card border-light mb-3" style="max-width: 20rem;">
+                <div class="card border-light mb-3" >
                     <div class="card-header">Animales Sueltos</div>
-                    <div class="card-body">
+                    <h6 id="sinDatosAnimales" style="display: none">No hay datos para ese periodo de tiempo</h6>
+                    <img class="card-img-top" src="" id="img4" alt="alt" style=" display: none; ">
 
-                        <p class="card-text"><!-- <img src="lineal.jpeg" alt=""
-                                style="width: 90%; margin-left: 20px; padding-top: 10px;"> --></p>
-                    </div>
                 </div>
             </div>
             <div class="col-4">
-                <div class="card border-light mb-3" style="max-width: 20rem;">
+                <div class="card border-light mb-3" >
                     <div class="card-header">Vehículos lentos</div>
-                    <div class="card-body">
+                    <h6 id="sinDatosVehiculos" style="display: none">No hay datos para ese periodo de tiempo</h6>
+                    <img class="card-img-top" src="" id="img5" alt="alt" style=" display: none; ">
 
-                        <p class="card-text"><!-- <img src="lineal.jpeg" alt=""
-                                style="width: 90%; margin-left: 20px; padding-top: 10px;"> --></p>
-                    </div>
                 </div>
             </div>
         </div>

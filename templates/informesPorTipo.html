@@ -5,16 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
     <script src="{{ url_for('static', filename='jquery.js') }}"></script>
     <title>Alertas Ruta 38</title>
 
     <script>
-        function actualizar(){
+        function actualizar() {
 
             var tipo = document.getElementById("tipo").value;
             var desde = document.getElementById("desde").value;
             var hasta = document.getElementById("hasta").value;
-                        
+
             var img0 = document.getElementById("img0")
             img0.style.display = "none";
             var img2 = document.getElementById("img2")
@@ -31,15 +32,15 @@
             var sinDatosNivelMes = document.getElementById("sinDatosNivelMes")
             sinDatosNivelMes.style.display = "none";
 
-            if (tipo == "-"){
+            if (tipo == "-") {
                 alert("Debe seleccionar un tipo de riesgo");
                 return
             }
-            if(desde==""){
+            if (desde == "") {
                 alert("Debe seleccionar la fecha Desde");
                 return
             }
-            if(hasta==""){
+            if (hasta == "") {
                 alert("Debe seleccionar la fecha Hasta");
                 return
             }
@@ -51,7 +52,7 @@
             req = $.ajax({
                 url: '/estadisticasPorTipo',
                 type: 'POST',
-                data: { 'desde':desde, 'hasta':hasta, 'tipo':tipo }
+                data: { 'desde': desde, 'hasta': hasta, 'tipo': tipo }
             });
 
             req.done(function (data) {
@@ -59,7 +60,7 @@
                     alert(data.error);
                     return
                 }
-                else {      
+                else {
 
                     /*var imgTipos = data.imagenTipos   
                     if(imgTipos=="SinDatos"){
@@ -69,42 +70,60 @@
                         img0.style.display = "block";
                         img0.setAttribute("src",'data:image/png;base64,'+imgTipos);
                         
-                    } */                
-                    
-                    var imgNiveles = data.imagenNiveles  
-                    if(imgNiveles=="SinDatos"){
-                        sinDatosNivel.style.display = "block";
-                        
-                    }
-                    else{
-                        img0.style.display = "block";
-                        img0.setAttribute("src",'data:image/png;base64,'+imgNiveles);                        
-                    }    
+                    } */
 
-                    var imgNivelesSemana = data.imagenNivelesSemana  
-                    if(imgNivelesSemana=="SinDatos"){
+                    var imgNiveles = data.imagenNiveles
+                    if (imgNiveles == "SinDatos") {
+                        sinDatosNivel.style.display = "block";
+
+                    }
+                    else {
+                        img0.style.display = "block";
+                        img0.setAttribute("src", 'data:image/png;base64,' + imgNiveles);
+                    }
+
+                    var imgNivelesSemana = data.imagenNivelesSemana
+                    if (imgNivelesSemana == "SinDatos") {
                         sinDatosNivelSemana.style.display = "block";
-                        
+
                     }
-                    else{
+                    else {
                         img2.style.display = "block";
-                        img2.setAttribute("src",'data:image/png;base64,'+imgNivelesSemana);                        
-                    }    
-                    
-                    var imgNivelesMes = data.imagenNivelesMes 
-                    if(imgNivelesMes=="SinDatos"){
-                        sinDatosNivelMes.style.display = "block";
-                        
+                        img2.setAttribute("src", 'data:image/png;base64,' + imgNivelesSemana);
                     }
-                    else{
+
+                    var imgNivelesMes = data.imagenNivelesMes
+                    if (imgNivelesMes == "SinDatos") {
+                        sinDatosNivelMes.style.display = "block";
+
+                    }
+                    else {
                         img3.style.display = "block";
-                        img3.setAttribute("src",'data:image/png;base64,'+imgNivelesMes);                        
-                    }   
+                        img3.setAttribute("src", 'data:image/png;base64,' + imgNivelesMes);
+                    }
 
                 }
             });
 
 
+        }
+
+        function AgrandarImagen(texto,imagen) {
+            document.getElementById("modal").style.display = "block";
+            document.getElementById("modalTexto").innerHTML=texto;
+            var modalImagen = document.getElementById("modalImagen");
+            var agrandarImagen = document.getElementById(imagen).src;
+            modalImagen.setAttribute("src",agrandarImagen);
+        }
+
+        function cerrarModal() {
+            document.getElementById("modal").style.display = "none";
+        }
+
+        window.onclick = function (event) {
+            if (event.target == document.getElementById("modal")) {
+                document.getElementById("modal").style.display = "none";
+            }
         }
 
     </script>
@@ -134,9 +153,9 @@
                 <li class="nav-item ">
                     <a class="nav-link active" href="#">Informes</a>
                 </li>
-                <!-- <li class="nav-item ">
-                    <a class="nav-link" href="/informesPorTramo">Buscador</a>
-                </li> -->
+                <li class="nav-item ">
+                    <a class="nav-link" href="/buscador">Buscador</a>
+                </li> 
 
             </ul>
         </div>
@@ -170,29 +189,32 @@
             </div>
 
             <div class="col-1">
-                <label class="col-form-label" for="inputDefault">Desde: </label></div>
+                <label class="col-form-label" for="inputDefault">Desde: </label>
+            </div>
             <div class="col-3">
                 <input type="datetime-local" style="margin-left:-40px" class="form-control" placeholder="Default input"
                     id="desde">
             </div>
             <div class="col-1">
-                <label class="col-form-label" for="inputDefault" style="margin-left:-40px">Hasta: </label></div>
+                <label class="col-form-label" for="inputDefault" style="margin-left:-40px">Hasta: </label>
+            </div>
             <div class="col-3">
                 <input type="datetime-local" style="margin-left:-80px" class="form-control" placeholder="Default input"
                     id="hasta">
-                
+
             </div>
             <div class="col-1">
-                <button type="button" class="btn btn-primary" style="margin-left:-60px" onclick="actualizar()">Actualizar</button>
+                <button type="button" class="btn btn-primary" style="margin-left:-60px"
+                    onclick="actualizar()">Actualizar</button>
             </div>
         </div>
         <br>
-        <div class="row">
+        <div class="row" style="text-align: center;">
             <div class="col-4">
                 <div class="card border-light mb-3" style="max-width: 20rem;">
                     <div class="card-header">Distribución por nivel de riesgo</div>
-                    <h4 id="sinDatosNivel" style="display: none">No hay datos para ese periodo de tiempo</h4>
-                    <img class="card-img-top" src="" id="img0" alt="alt" style=" display: none; ">             
+                    <h6 id="sinDatosNivel" style="display: none; margin-top: 10px;">No hay datos para ese periodo de tiempo</h6>
+                    <img class="card-img-top" src="" id="img0" alt="alt" style=" display: none;" onclick="AgrandarImagen('Distribución por nivel de riesgo','img0')">
                 </div>
 
             </div>
@@ -202,38 +224,52 @@
                     <div class="card-body">
                         <p class="card-text">
                             <!-- <img src="mapa.png" alt=""
-                                style="width: 70%; text-align: center; margin-left: 50px; padding-top: 10px;"> --></p>
+                                style="width: 70%; text-align: center; margin-left: 50px; padding-top: 10px;"> -->
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="row">
+        <div class="row" style="text-align: center;">
+            <div class="col-4">
+                <div class="card border-light mb-3" style="max-width: 20rem;">
+                    <div class="card-header">Alertas por nivel de riesgo según mes del año</div>
+                    <h6 id="sinDatosNivelMes" style="display: none; margin-top: 10px;">No hay datos para ese periodo de tiempo</h6>
+                    <img class="card-img-top" src="" id="img3" alt="alt" style=" display: none; " onclick="AgrandarImagen('Alertas por nivel de riesgo según mes del año','img3')">
+                </div>
+            </div>
             <div class="col-4">
                 <div class="card border-light mb-3" style="max-width: 20rem;">
                     <div class="card-header">Alertas por nivel de riesgo según día de la semana</div>
-                    <h4 id="sinDatosNivelSemana" style="display: none">No hay datos para ese periodo de tiempo</h4>
-                    <img class="card-img-top" src="" id="img2" alt="alt" style=" display: none; "> 
+                    <h6 id="sinDatosNivelSemana" style="display: none; margin-top: 10px;">No hay datos para ese periodo de tiempo</h6>
+                    <img class="card-img-top" src="" id="img2" alt="alt" style=" display: none; " onclick="AgrandarImagen('Alertas por nivel de riesgo según día de la semana','img2')">
                 </div>
             </div>
             <div class="col-4">
                 <div class="card border-light mb-3" style="max-width: 20rem;">
                     <div class="card-header">Alertas por nivel de riesgo según momento del día</div>
-                    <div class="card-body">
 
-                        <p class="card-text"><!-- <img src="tipodia.png" alt=""
-                                style="width: 90%; margin-left: 20px; padding-top: 10px;"> --></p>
-                    </div>
                 </div>
             </div>
-            <div class="card border-light mb-3" style="max-width: 20rem;">
-                <div class="card-header">Alertas por nivel de riesgo según mes del año</div>
-                <h4 id="sinDatosNivelMes" style="display: none">No hay datos para ese periodo de tiempo</h4>
-                    <img class="card-img-top" src="" id="img3" alt="alt" style=" display: none; "> 
-            </div>
+           
         </div>
 
-        <br>
+        <div class="modal" id="modal">
+            <div class="modal-content">
+                <header>
+                    <button class="close" onclick="cerrarModal()" style="font-size: small;">x</button>
+                    <h4 style="text-align: center; margin-bottom: 20px; text-decoration: underline;" id="modalTexto"> 
+                    </h4>
+    
+                </header>
+    
+               <div style="text-align: center; color:black ;">
+                    <img src="" id="modalImagen" alt="algo" >
+                </div> 
+    
+            </div>
+        </div>
 
         <br>
 </body>
