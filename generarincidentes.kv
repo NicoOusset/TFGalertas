@@ -1,0 +1,41 @@
+<Contenedor>:
+
+    tipo : tipo
+    comentario : comentario
+    tramo: tramo
+
+    GridLayout:
+        cols : 1
+        size: root.width - 200, root.height -200
+        pos: 100, 100
+
+        GridLayout:
+            cols : 2
+
+            Label:
+                text:"Tipo: "
+            
+            TextInput:
+                id: tipo
+                multiline:False
+                size_hint:(.5,.1)
+            
+            Label:
+                text:"Comentario: "
+            
+            TextInput:
+                id: comentario
+                multiline:False
+            
+            Label:
+                text:"Tramo: "
+            
+            TextInput:
+                id: tramo
+                multiline:False
+
+        Button:
+            text:"Generar incidente"
+            on_press: root.generarIncidente()
+            pos:(300,350)
+            size_hint: (.25, .18)

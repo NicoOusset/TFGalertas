@@ -11,7 +11,7 @@
 
   <script>
 
-    var titulos = ['descripcion', 'tipo', 'tramo', 'nivel', 'fecha_inicio']
+    var titulos = ['tipo', 'tramo', 'comentario', 'fecha_creacion', 'estado']
 
     function buscar() {
 
@@ -19,6 +19,8 @@
       var tipo = document.getElementById("tipo").value;
       var desde = document.getElementById("desde").value;
       var hasta = document.getElementById("hasta").value;
+      var sinVisualizar = document.getElementById("sinVisualizar").checked;
+      var sinAlertar = document.getElementById("sinAlertar").checked;
 
       if (hasta != "") {
         if (desde > hasta) {
@@ -28,9 +30,9 @@
       }
 
       req = $.ajax({
-        url: '/buscadorAlertas',
+        url: '/buscadorIncidentes',
         type: 'POST',
-        data: { 'desde': desde, 'hasta': hasta, 'tramo': tramo, 'tipo': tipo }
+        data: { 'desde': desde, 'hasta': hasta, 'tramo': tramo, 'tipo': tipo, 'sinVisualizar': sinVisualizar, 'sinAlertar': sinAlertar }
       });
 
       req.done(function (data) {
@@ -40,10 +42,10 @@
         }
         else {
 
-          datos = data.alertas
+          datos = data.incidentes
           datoss = JSON.parse(datos)
 
-          $("#alertasDatos tr").remove();
+          $("#incidentesDatos tr").remove();
 
           for (var i = 0; i < datoss.length; i++) {
 
@@ -56,14 +58,32 @@
                 }*/
 
               if (cellValue == null) cellValue = "";
-
-
-              if (cellValue == 'extrema') {
-                cellValue = cellValue + ' <img src="{{ url_for("static", filename="extrema.png") }}" style="width: 25px;" alt="">';
+              if (cellValue == 'NoVisualizado') {
+                cellValue = 'No Visualizado';
               }
+
               row$.append($('<td/>').html(cellValue));
             }
-            $('#alertasTabla').append(row$);
+            const idIncidente = datoss[i]['_id']['$oid']
+            const tdDetalle = document.createElement("td");
+            const buttonDetalle = document.createElement("button");
+            buttonDetalle.type = 'button';
+            buttonDetalle.className = 'btn btn-info';
+            buttonDetalle.innerText = 'ver';
+
+            buttonDetalle.onclick = function () {
+
+              window.location.href = "/detalleIncidente?id=" + idIncidente + "";
+
+
+            };
+
+            tdDetalle.appendChild(buttonDetalle);
+
+            row$.append(tdDetalle)
+
+            $('#incidentesTabla').append(row$);
+
           }
 
         }
@@ -71,6 +91,8 @@
 
 
     }
+
+
 
   </script>
 
@@ -102,15 +124,16 @@
           <a class="nav-link " href="/informes">Informes</a>
         </li>
         <li class="nav-item ">
-          <a class="nav-link active" href="#">Buscador</a>
+          <a class="nav-link" href="/buscador">Buscador</a>
         </li>
         <li class="nav-item ">
-          <a class="nav-link" href="/incidentes">Incidentes</a>
+          <a class="nav-link active" href="#">Incidentes</a>
         </li>
       </ul>
     </div>
     <br>
     <br>
+
 
     <div class="form-group row">
       <div class="row col-10">
@@ -127,6 +150,7 @@
               <option value="viento">Viento</option>
               <option value="animales">Animales</option>
               <option value="vehiculos">Vehículos lentos</option>
+              <option value="otros">Otros</option>
             </select>
           </div>
         </div>
@@ -156,7 +180,7 @@
             </select>
           </div>
         </div>
-        
+
         <div class="row col-6" style="margin-top: 15px; ">
           <div class="col-3">
             <label class="col-form-label" for="inputDefault">Desde: </label>
@@ -173,25 +197,51 @@
             <input type="datetime-local" class="form-control" placeholder="Default input" id="hasta">
           </div>
         </div>
+        <div class="row col-6" style="margin-top: 15px;">
+          <div class="col-4">
+            <label class="col-form-label" for="inputDefault">Sin visualizar: </label>
+          </div>
+          <div class="col-2">
+            <input type="checkbox" style="width: 30px; margin-top: 12px; " class="" id="sinVisualizar">
+          </div>
+        </div>
+        <div class="row col-6" style="margin-top: 15px;">
+          <div class="col-3">
+            <label class="col-form-label" for="inputDefault">Sin alertar: </label>
+          </div>
+          <div class="col-2" style="text-align: right;">
+            <input type="checkbox" style="width: 30px; margin-top: 12px; margin-left: -10px; " class="" id="sinAlertar">
+          </div>
+        </div>
+
 
       </div>
-      <div class="col-2">
+      <div class="col-1">
         <div class="col-1">
           <button type="button" class="btn btn-primary" style="margin-left:-60px" onclick="buscar()">Buscar</button>
         </div>
       </div>
+      <div class="col-1">
+        <div class="col-1">
+          <!-- <button type="button" class="btn btn-primary"  style="margin-top: 35px; margin-left: -15px;"
+                  onclick="generar()">+</button> -->
+          <a class="btn btn-danger" href="/generarIncidente">+</a>
+        </div>
+      </div>
     </div>
-    <table class="table table-striped" id="alertasTabla">
+    <table class="table table-striped" id="incidentesTabla">
       <thead>
         <tr class="table-primary">
-          <td>Descripción</td>
+
           <td>Tipo</td>
           <td>Tramo</td>
-          <td>Nivel de riesgo</td>
+          <td>Comentario</td>
           <td>Fecha y Hora</td>
+          <td>Estado</td>
+          <td>Detalle</td>
         </tr>
       </thead>
-      <tbody id="alertasDatos">
+      <tbody id="incidentesDatos">
 
       </tbody>
     </table>

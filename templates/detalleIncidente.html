@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.css') }}">
+    <script src="{{ url_for('static', filename='jquery.js') }}"></script>
+    <title>Alertas Ruta 38</title>
+
+
+    <script>
+
+        function generar() {
+            var tipo = document.getElementById("tipo").value;
+            var nivel = document.getElementById("nivel").value;
+            var tramo = document.getElementById("tramo").value;
+            var descripcion = document.getElementById("descripcion").value;
+            var idIncidente = document.getElementById("idIncidente").innerHTML;
+            
+            if (tipo == "-") {
+                alert("Debe seleccionar un tipo de riesgo");
+                return
+            }
+            if (nivel == "-") {
+                alert("Debe seleccionar un nivel de riesgo");
+                return
+            }
+            if (tramo == "-") {
+                alert("Debe seleccionar un tramo de la ruta");
+                return
+            }
+            if (descripcion == "") {
+                alert("Debe escribir una descripcion");
+                return
+            }
+
+            req = $.ajax({
+                url: '/generarAlertaDesdeIncidente',
+                type: 'POST',
+                data: { 'tipo': tipo, 'nivel': nivel, 'tramo': tramo, 'descripcion': descripcion ,'idIncidente':idIncidente }
+            });
+
+            req.done(function (data) {
+                if (data.result == "error") {
+                    alert(data.error);
+                    return
+                }
+                else {
+                    alert("Se genero la alerta correctamente")
+                    window.location.href = "/incidentes";
+                }
+            });
+
+
+        }
+
+
+    </script>
+
+</head>
+
+<body>
+
+    <div class="row" style="background-color: rgb(123, 138, 139); padding-left: 25px;">
+        <div class="col-1"><img src="{{ url_for('static', filename='logo.png') }}" alt=""
+                style="width: 50px; margin-left: 10px; padding-top: 10px;"></div>
+        <div style="padding-top: 10px; color: white;">
+            <h2>Gestión de Riesgos ruta nacional 38</h2>
+        </div>
+    </div>
+
+
+    <br>
+
+
+
+    <div class="container">
+        <div>
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link" href="/novedades">Novedades</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/ultimas24hs">Alertas en las últimas 24 hs</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link " href="/informes">Informes</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="/buscador">Buscador</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link active" href="#">Incidentes</a>
+                </li>
+            </ul>
+        </div>
+        <br>
+        <br>
+
+        <div class="row col-12">
+
+            <div class="card col-5" style="margin-right: 10px;  height: 350px;">
+                <div class="card-body">
+                    <p id="idIncidente" hidden>{{ idIncidente }}</p>
+                    <h4 class="card-title">Datos del incidente</h4>
+                    <p class="card-text" style="margin-top: 30px;">Tipo de riesgo: {{ tipo }}</p>
+                    <p class="card-text">Tramo de la ruta: {{ tramo }}</p>
+                    <p class="card-text">Comentario: {{ comentario }}</p>
+                    <p class="card-text">Fecha de creación: {{ fechaCreacion }}</p>
+                    {% if estado == 'NoVisualizado' %}
+                    <p class="card-text">Estado anterior del incidente: No visualizado</p>
+                    <p class="card-text">Estado actual del incidente: Visualizado</p>
+                    {% else %}
+                    <p class="card-text">Estado del incidente: {{ estado }}</p>
+                    {% endif %}
+
+                </div>
+            </div>
+
+
+
+            <div class="card col-6 form-group " style="margin-left: 30px;">
+                <div class=" card-body row col-12">
+                    <h4 class="card-title">Generar alerta de riesgo</h4>
+                    <div class="row col-12" style="margin-top: 10px;">
+                        <div class="col-3">
+                            <label class="col-form-label" for="inputDefault">Tipo: </label>
+                        </div>
+                        <div class="col-9">
+                            <select class="custom-select" id="tipo">
+                                <option selected value="-">Seleccione el Tipo de Riesgo</option>
+                                <option value="niebla">Niebla</option>
+                                <option value="lluvia">Lluvia</option>
+                                <option value="humo">Humo</option>
+                                <option value="viento">Viento</option>
+                                <option value="animales">Animales</option>
+                                <option value="vehiculos">Vehículos lentos</option>
+                                <option value="otros">Otros</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row col-12" style="margin-top: 15px;">
+                        <div class="col-3">
+                            <label class="col-form-label" for="inputDefault">Nivel de riesgo: </label>
+                        </div>
+                        <div class="col-9">
+                            <select class="custom-select" id="nivel">
+                                <option selected value="-">Seleccione el Nivel de Riesgo</option>
+                                <option value="leve">Leve</option>
+                                <option value="moderado">Moderado</option>
+                                <option value="alto">Alto</option>
+                                <option value="extrema">Extrema</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row col-12" style="margin-top: 15px;">
+                        <div class="col-3">
+                            <label class="col-form-label" for="inputDefault">Tramo: </label>
+                        </div>
+                        <div class="col-9">
+                            <select class="custom-select" id="tramo">
+                                <option selected value="-">Seleccione el Tramo</option>
+                                <option value="Rumi Punco - Pueblo Viejo">Rumi Punco - Pueblo Viejo</option>
+                                <option value="Pueblo Viejo - Rio el Sueño">Pueblo Viejo - Rio el Sueño</option>
+                                <option value="Rio el Sueño - Huasa Pampa">Rio el Sueño - Huasa Pampa</option>
+                                <option value="Huasa Pampa - Rio Marapa">Huasa Pampa - Rio Marapa</option>
+                                <option value="Rio Marapa - Villa Belgrano">Rio Marapa - Villa Belgrano</option>
+                                <option value="Villa Belgrano - Aguilares">Villa Belgrano - Aguilares</option>
+                                <option value="Aguilares - Concepcion">Aguilares - Concepcion</option>
+                                <option value="Concepcion - Rio Seco">Concepcion - Rio Seco</option>
+                                <option value="Rio Seco - Monteros">Rio Seco - Monteros</option>
+                                <option value="Monteros - Rio Caspichango">Monteros - Rio Caspichango</option>
+                                <option value="Rio Caspichango - Interseccion ruta 322">Rio Caspichango - Interseccion
+                                    ruta 322
+                                </option>
+                                <option value="Interseccion ruta 322 - Interseccion ruta 321">Interseccion ruta 322 -
+                                    Interseccion
+                                    ruta 321</option>
+                                <option value="Interseccion ruta 321 - S M de Tuc">Interseccion ruta 321 - S M de Tuc
+                                </option>
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row col-12" style="margin-top: 15px; ">
+                        <div class="col-3">
+                            <label class="col-form-label" for="inputDefault">Descripción: </label>
+                        </div>
+                        <div class="col-9">
+                            <textarea rows="4" class="form-control" id="descripcion">{{ comentario }}</textarea>
+                        </div>
+                    </div>
+
+                    {% if estado == 'Alertado' %}
+                    <div class="col-12" style="margin-top: 35px;">
+                        <p>¡ESTE INCIDENTE YA FUE ALERTADO!</p>
+                    </div>
+                    {% else %}
+                    <div class="col-12">                        
+                        <button type="button" class="btn btn-primary" style="margin-top: 35px;"
+                         onclick="generar()">Generar</button>
+                        
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="col-5">
+            <div class="col-1">
+                <a class="btn btn-danger" style="margin-top: 35px;" href="/incidentes">Volver</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+<script>
+    function selectedTipo(){        
+        var selectorTipo = document.getElementById("tipo")
+        var tipoElegido = '{{tipo}}'
+        
+        for (var i = 0; i < 8; i++) {             
+            if(selectorTipo.options[i].value == tipoElegido){
+                selectorTipo.options[i].selected = true;
+            }
+        }    
+    }
+    function selectedTramo(){        
+        var selectorTramo = document.getElementById("tramo")
+        var tramoElegido = '{{tramo}}'
+        
+        for (var i = 0; i < 13; i++) {             
+            if(selectorTramo.options[i].value == tramoElegido){
+                selectorTramo.options[i].selected = true;
+            }
+        }    
+    }
+    selectedTipo();
+    selectedTramo();
+  </script>
+
+</html>

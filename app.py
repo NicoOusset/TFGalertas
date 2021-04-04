@@ -1,6 +1,7 @@
 from conexion import Conexion
 from datetime import datetime
 from alerta import Alerta
+from incidente import Incidente
 from bson.json_util import dumps
 import lectorCSV
 import calculos
@@ -16,7 +17,6 @@ from matplotlib.figure import Figure
 import base64
 
 app = Flask(__name__)
-
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
@@ -36,15 +36,24 @@ def ultimas24hs():
 
 @app.route('/informes', methods=['POST', 'GET'])
 def informes():
-    return render_template('informes.html', imagen={ 'imagen': '' })
+    return render_template('informes.html', imagen={ 'imagen': '' }, fechaDesde=fechaDesde, fechaHasta=fechaHasta)
 
 @app.route('/informesPorTipo', methods=['POST', 'GET'])
 def informesPorTipo():
-    return render_template('informesPorTipo.html')
+    print(tipoRiesgo)
+    return render_template('informesPorTipo.html', fechaDesde=fechaDesde, fechaHasta=fechaHasta , tipoRiesgo=tipoRiesgo)
 
 @app.route('/informesPorTramo', methods=['POST', 'GET'])
 def informesPorTramo():
-    return render_template('informesPorTramo.html')
+    return render_template('informesPorTramo.html', fechaDesde=fechaDesde, fechaHasta=fechaHasta, tipoRiesgo=tipoRiesgo ,tramoRuta=tramoRuta)
+
+@app.route('/incidentes', methods=['POST', 'GET'])
+def incidentes():
+    return render_template('incidentes.html')
+
+@app.route('/generarIncidente', methods=['POST', 'GET'])
+def generarIncidente():
+    return render_template('generarIncidente.html')
 
 @app.route('/leerUnCSV', methods=['POST'])
 def leerUnCSV():
@@ -77,14 +86,11 @@ def UltimasAlertas():
 
 
 def tiempoReal(fecha, ubicacion, temperatura, humedad, presion, velocidadViento, milimetrosLluvia, puntoRocio, velocidadVehic, longitudVehic):
-          
-    
+              
     calculos.AlertasLluvia(milimetrosLluvia, fecha, ubicacion)
     calculos.AlertasViento(velocidadViento, fecha, ubicacion)
     calculos.AlertasNiebla(temperatura, velocidadViento, presion, puntoRocio, fecha, ubicacion)
     
-
-
 
 @app.route('/estadisticasGenerales', methods=['POST'])
 def estadisticasGenerales():
@@ -94,12 +100,17 @@ def estadisticasGenerales():
         try:
             graficosNiveles = graficos.informeGeneralNivel(desde,hasta)
             graficosTipos = graficos.informeGeneralTipo(desde,hasta)
+            global fechaDesde            
+            fechaDesde=desde
+            global fechaHasta           
+            fechaHasta=hasta
+            
 
         except Exception as e:
             error=str(e)
             return jsonify({'result':'error','error':error})
        
-        return jsonify({'result':'success', 'imagenNiveles': graficosNiveles, 'imagenTipos': graficosTipos  })
+        return jsonify({'result':'success', 'imagenNiveles': graficosNiveles, 'imagenTipos': graficosTipos })
 
 
 @app.route('/estadisticasPorTipo', methods=['POST'])
@@ -109,8 +120,12 @@ def estadisticasPorTipo():
         desde=request.form.get("desde")  
         hasta=request.form.get("hasta")  
         try:
-            print(desde)
-            print(hasta)
+            global fechaDesde            
+            fechaDesde=desde
+            global fechaHasta           
+            fechaHasta=hasta
+            global tipoRiesgo
+            tipoRiesgo = tipo
 
             graficosNiveles = graficos.informeTipoNivel(tipo,desde,hasta)  
             graficosNivelesSemana = graficos.informeTipoNivelSemana(tipo,desde,hasta)        
@@ -129,8 +144,12 @@ def estadisticasPorTramo():
         desde=request.form.get("desde")  
         hasta=request.form.get("hasta")  
         try:
-            print(desde)
-            print(hasta)
+            global fechaDesde            
+            fechaDesde=desde
+            global fechaHasta           
+            fechaHasta=hasta
+            global tramoRuta
+            tramoRuta = tramo
 
             graficosTramosTipos = graficos.informeTramoTipos(tramo,desde,hasta)
             graficosNiveles = graficos.informeTramoNivel(tramo,desde,hasta)  
@@ -153,7 +172,12 @@ def estadisticasPorTramoTipo():
         try:
            
             graficosTramosTiposMes = graficos.informeTramoTipoNivelMes(tramo,tipo,desde,hasta) 
-            graficosTramosTiposSemana = graficos.informeTramoTipoNivelSemana(tramo,tipo,desde,hasta)             
+            graficosTramosTiposSemana = graficos.informeTramoTipoNivelSemana(tramo,tipo,desde,hasta)
+            global tipoRiesgo
+            tipoRiesgo = tipo
+            global tramoRuta
+            tramoRuta = tramo
+             
 
         except Exception as e:
             error=str(e)
@@ -206,6 +230,137 @@ def buscadorAlertas():
 
     return jsonify({'result':'success', 'alertas': datosJson})
 
+
+@app.route('/buscadorIncidentes', methods=['POST'])
+def buscadorIncidentes():
+    tramo=request.form.get("tramo")  
+    tipo=request.form.get("tipo") 
+    desde=request.form.get("desde")  
+    hasta=request.form.get("hasta") 
+    sinVisualizar=request.form.get("sinVisualizar")  
+    sinAlertar=request.form.get("sinAlertar")  
+    try:
+
+        ListaIncidentes = list(Incidente.buscarIncidentes(tramo, tipo, desde, hasta,sinVisualizar,sinAlertar))
+        
+        for i in ListaIncidentes:
+            
+            f = (i['fecha_creacion'])
+            i['fecha_creacion'] = "{:02d}-{:02d}-{} {:02d}:{:02d}:{:02d}".format(f.day, f.month, f.year, f.hour, f.minute, f.second)
+
+        datosJson = dumps(ListaIncidentes)
+        
+    except Exception as e:
+        error=str(e)
+        return jsonify({'result':'error','error':error})
+
+    return jsonify({'result':'success', 'incidentes': datosJson})
+
+
+@app.route('/detalleIncidente', methods=['POST', 'GET'])
+def detalleIncidente():
+    idIncidente=request.args.get("id")
+
+    IncidenteBuscado = Incidente.buscarIncidentePorId(idIncidente)
+    print(IncidenteBuscado)
+    Tipo = IncidenteBuscado['tipo']
+    Tramo = IncidenteBuscado['tramo']
+    Comentario  = IncidenteBuscado['comentario']
+    f = IncidenteBuscado['fecha_creacion']
+    FechaCreacion = "{:02d}-{:02d}-{} {:02d}:{:02d}:{:02d}".format(f.day, f.month, f.year, f.hour, f.minute, f.second)
+    Estado  = IncidenteBuscado['estado']
+
+    if Estado=='NoVisualizado':
+        Incidente.modificarEstadoIncidente(idIncidente,"Visualizado")
+    
+    return render_template('detalleIncidente.html', idIncidente=idIncidente, tipo=Tipo, tramo=Tramo, comentario=Comentario, fechaCreacion=FechaCreacion, estado=Estado)
+
+
+
+@app.route('/nuevoIncidente', methods=['POST'])
+def nuevoIncidente():  
+    tipo=request.form.get("tipo") 
+    comentario=request.form.get("comentario")   
+    tramo=request.form.get("tramo") 
+    fecha_creacion= datetime.now()  
+    try:
+        print(tipo)
+        print(comentario)
+        nuevoIncidente = Incidente(tipo,comentario,tramo, fecha_creacion)
+        nuevoIncidente.cargarIncidente()
+
+    except Exception as e:
+        error=str(e)
+        return jsonify({'result':'error','error':error})
+
+    return jsonify({'result':'success'})
+
+
+def nuevoIncidenteMovil(tipo,comentario,tramo):  
+    tipo=tipo
+    comentario=comentario
+    tramo=tramo
+    fecha_creacion= datetime.now() 
+    mensaje=""
+
+    if(tipo==""):
+        mensaje="Debe indicar el tipo de riesgo"
+    elif(comentario==""):
+        mensaje="Debe escribir un comentario"
+    elif(tramo==""):
+        mensaje="Debe indicar un tramo de la ruta"
+    else:
+        mensaje="ok"
+        try:        
+            nuevoIncidente = Incidente(tipo,comentario,tramo, fecha_creacion)
+            nuevoIncidente.cargarIncidente()
+            print("Se genero el incidente")
+
+        except Exception as e:
+            error=str(e)
+            print(error)
+    return mensaje
+
+@app.route('/generarAlertaDesdeIncidente', methods=['POST'])
+def generarAlertaDesdeIncidente(): 
+    tipo=request.form.get("tipo") 
+    nivel=request.form.get("nivel") 
+    descripcion=request.form.get("descripcion")   
+    tramo=request.form.get("tramo") 
+    idIncidente= request.form.get("idIncidente")   
+    fecha= datetime.now() 
+
+    try:
+        print(tipo)        
+        nuevaAlerta = Alerta(tipo,descripcion, tramo, nivel, fecha, None)
+        nuevaAlerta.cargarAlerta() 
+        Incidente.modificarEstadoIncidente(idIncidente,"Alertado")
+
+
+    except Exception as e:
+        error=str(e)
+        return jsonify({'result':'error','error':error})
+
+    return jsonify({'result':'success'})
+
+
+global fechaDesde
+fechaDesde1 = datetime.now()
+fechaDesde= datetime(fechaDesde1.year, fechaDesde1.month, fechaDesde1.day, 00, 00, 00, 00000)
+fechaDesde= "{}-{}-{}T{}:{}".format(fechaDesde.year, fechaDesde.strftime("%m"), fechaDesde.strftime("%d"),fechaDesde.strftime("%H"),fechaDesde.strftime("%M"))
+
+global fechaHasta
+fechaHasta1 = datetime.now()
+fechaHasta= datetime(fechaHasta1.year, fechaHasta1.month, fechaHasta1.day, 23, 59, 59, 00000)
+fechaHasta= "{}-{}-{}T{}:{}".format(fechaHasta.year, fechaHasta.strftime("%m"), fechaHasta.strftime("%d"),fechaHasta.strftime("%H"),fechaHasta.strftime("%M"))
+
+
+
+global tipoRiesgo
+tipoRiesgo = ""
+
+global tramoRuta
+tramoRuta = ""
 
 if __name__ == "__main__":
     app.run(debug=True,

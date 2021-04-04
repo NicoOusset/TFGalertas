@@ -208,6 +208,9 @@
                 <li class="nav-item ">
                     <a class="nav-link" href="/buscador">Buscador</a>
                 </li> 
+                <li class="nav-item ">
+                    <a class="nav-link" href="/incidentes">Incidentes</a>
+                </li> 
 
             </ul>
         </div>
@@ -255,14 +258,14 @@
             </div>
             <div class="col-3">
                 <input type="datetime-local" style="margin-left:-40px" class="form-control" placeholder="Default input"
-                    id="desde">
+                    id="desde" value="{{ fechaDesde }}">
             </div>
             <div class="col-1">
                 <label class="col-form-label" for="inputDefault" style="margin-left:-40px">Hasta: </label>
             </div>
             <div class="col-3">
                 <input type="datetime-local" style="margin-left:-80px" class="form-control" placeholder="Default input"
-                    id="hasta">
+                    id="hasta" value="{{ fechaHasta }}">
             </div>
             <div class="col-1">
                 <button type="button" class="btn btn-primary" style="margin-left:-60px"
@@ -293,18 +296,16 @@
         <br>
         <hr style="border:15px;  height: 3px;   width: 100%;    background-color: grey;">
         <br>
-    
-
         <div class="form-group row" >
             <div class="col-3">
                 <select class="custom-select" style="width:230px" id="tipo">
                     <option selected value="-">Seleccione el Tipo de Riesgo</option>
-                    <option value="niebla">Niebla</option>
-                    <option value="lluvia">Lluvia</option>
-                    <option value="humo">Humo</option>
+                    <option value="niebla" >Niebla</option>
+                    <option value="lluvia" >Lluvia</option>
+                    <option value="humo" >Humo</option>
                     <option value="viento">Viento</option>
-                    <option value="animales">Animales</option>
-                    <option value="vehiculos">Vehículos lentos</option>
+                    <option value="animales" >Animales</option>
+                    <option value="vehiculos" >Vehículos lentos</option>
                 </select>
             </div>
             <div class="col-1">
@@ -354,5 +355,31 @@
             </div>
         </div>
 </body>
+
+<script>
+    function selectedTipo(){        
+        var selectorTipo = document.getElementById("tipo")
+        var tipoElegido = '{{tipoRiesgo}}'
+        
+        for (var i = 0; i < 7; i++) {             
+            if(selectorTipo.options[i].value == tipoElegido){
+                selectorTipo.options[i].selected = true;
+            }
+        }    
+    }
+    function selectedTramo(){        
+        var selectorTramo = document.getElementById("tramo")
+        var tramoElegido = '{{tramoRuta}}'
+        
+        for (var i = 0; i < 13; i++) {             
+            if(selectorTramo.options[i].value == tramoElegido){
+                selectorTramo.options[i].selected = true;
+            }
+        }    
+    }
+    selectedTipo();
+    selectedTramo();
+  </script>
+
 
 </html>

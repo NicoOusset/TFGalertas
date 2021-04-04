@@ -126,6 +126,9 @@
                 <li class="nav-item ">
                     <a class="nav-link" href="/buscador">Buscador</a>
                 </li> 
+                <li class="nav-item ">
+                    <a class="nav-link" href="/incidentes">Incidentes</a>
+                </li> 
 
             </ul>
         </div>
@@ -145,20 +148,20 @@
         </div>
         <br>
         <br>
-
+        
         <div class="form-group row">
             <div class="col-1">
                 <label class="col-form-label" for="inputDefault">Desde: </label></div>
             <div class="col-3">
                 <input type="datetime-local" style="margin-left:-40px" class="form-control" placeholder="Default input"
-                    id="desde">
+                    id="desde" value="{{ fechaDesde }}">
             </div>
             <div class="col-1"></div>
             <div class="col-1">
                 <label class="col-form-label" for="inputDefault" style="margin-left:-100px">Hasta: </label></div>
             <div class="col-3">
                 <input type="datetime-local" style="margin-left:-120px" class="form-control" placeholder="Default input"
-                    id="hasta">
+                    id="hasta" value="{{ fechaHasta }}">
             </div>
             <div class="col-3">
                 <button type="button" class="btn btn-primary" style="margin-left:-100px" onclick="actualizar()">Actualizar</button>
