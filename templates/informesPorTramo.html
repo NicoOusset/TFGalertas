@@ -43,6 +43,8 @@
                 return
             }
 
+            var tipo = document.getElementById("tipo").value;
+            
             req = $.ajax({
                 url: '/estadisticasPorTramo',
                 type: 'POST',
@@ -74,6 +76,11 @@
                     else {
                         img1.style.display = "block";
                         img1.setAttribute("src", 'data:image/png;base64,' + imgNiveles);
+                    }
+
+                    if (tipo != "-") {
+                        actualizar2();
+                    
                     }
 
                 }

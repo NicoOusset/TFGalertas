@@ -6,10 +6,19 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 from kivy.uix.widget import Widget
 from kivy.properties import ObjectProperty
+from kivy.lang import Builder
+from kivy.uix.screenmanager import ScreenManager, Screen
 
 import app
 
-class Contenedor(Widget):
+class MainWindow(Screen):
+    pass
+
+
+class SecondWindow(Screen):
+    pass
+
+class GenerarUnIncidente(Screen):
     tipo = ObjectProperty(None)
     comentario = ObjectProperty(None)
     tramo = ObjectProperty(None)
@@ -24,7 +33,10 @@ class Contenedor(Widget):
         self.tramo.text = ""
         print(mensaje)
 
+class WindowManager(ScreenManager):
+    pass
 
+kv = Builder.load_file("generarincidentes.kv")
 
 ''' class contenedor2(GridLayout):
     def __init__(self,**kwargs):
@@ -64,7 +76,7 @@ class Contenedor(Widget):
 
 class GenerarIncidentes(App):
     def build(self):
-        return Contenedor()
+        return kv
 
 if __name__ == "__main__":
     GenerarIncidentes().run() 

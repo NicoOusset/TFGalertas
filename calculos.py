@@ -73,6 +73,44 @@ def NivelRiesgoNiebla(temperatura, velocidadViento, presion, puntoRocio):
     return nivel  
 
 
+def NivelRiesgoHumo(humo):
+    
+    nivel = "";
+    
+    if(humo!=None):
+        humo=float(humo)
+        if(humo == 0):
+            nivel = "nulo"       
+        if(humo == 1):
+            nivel = "alto"      
+    else:
+        nivel = "sin datos"    
+
+    return nivel  
+
+
+def NivelRiesgoVehiculos(velocidadVehic, longitudVehic):
+    
+    nivel = "";
+
+    if(velocidadVehic!=None and longitudVehic!=None):
+
+        nivel = "nulo"
+
+        velocidadVehic=float(velocidadVehic)
+        longitudVehic=float(longitudVehic)
+        
+        ''' if(presion > 1020):
+            if(velocidadViento < 10):
+                if(temperatura < 12):
+                    if((temperatura-puntoRocio) <= 1):
+                        nivel = "alto" '''
+
+    else:
+        nivel = "sin datos"    
+
+    return nivel
+
 def AlertasLluvia(milimetrosLluvia, fecha, ubicacion):
 
     nivel= NivelRiesgoLluvia(milimetrosLluvia)
@@ -236,6 +274,117 @@ def AlertasNiebla(temperatura, velocidadViento, presion, puntoRocio, fecha, ubic
 
                 else:
                     print("No hay nueva alerta por ser nivel de NIEBLA Nulo") 
+                    print("-----------------------------")   
+                
+            else:
+                print("No hay que actualizar alerta")
+                print("-----------------------------") 
+
+    else:
+        print("No hay DATOS")
+        print("-----------------------------") 
+
+
+
+def AlertasHumo(humo, fecha, ubicacion):
+    
+    nivel = NivelRiesgoHumo(humo)
+
+    if(nivel!="sin datos"): 
+
+        AlertaActiva = Alerta.buscarAlertaActiva('humo',ubicacion)        
+        descripcion = 'Hay humo que impide la visión'
+
+        if(AlertaActiva==""):
+
+            print("No hay alertas activas para Humo en esa ubicacion")
+
+            if(nivel != "nulo"):
+                nuevaAlerta = Alerta('humo',descripcion, ubicacion, nivel, fecha, None)
+                nuevaAlerta.cargarAlerta()           
+
+                print("NUEVA ALERTA PARA HUMO, NIVEL: "+nivel)
+                print("-----------------------------")
+
+            else:
+                print("No hay nueva alerta por ser nivel de HUMO Nulo") 
+                print("-----------------------------")
+
+        else:
+
+            print("El nivel de la alerta activa de HUMO es: ",AlertaActiva['nivel'])
+            print("nivel nuevo de HUMO: ",nivel) 
+
+            if(nivel!=AlertaActiva['nivel']):
+                
+                idAlertaAnterior = AlertaActiva['_id']
+                Alerta.inactivarAlerta(idAlertaAnterior,fecha)            
+                print("Se inactiva Alerta anterior")
+
+                if(nivel!="nulo"):
+                    nuevaAlerta = Alerta('humo', descripcion, ubicacion, nivel, fecha, None)
+                    nuevaAlerta.cargarAlerta()                
+
+                    print("NUEVA ALERTA PARA HUMO, NIVEL: "+nivel)
+                    print("-----------------------------") 
+
+                else:
+                    print("No hay nueva alerta por ser nivel de HUMO Nulo") 
+                    print("-----------------------------")   
+                
+            else:
+                print("No hay que actualizar alerta")
+                print("-----------------------------") 
+
+    else:
+        print("No hay DATOS")
+        print("-----------------------------") 
+
+
+def AlertasVehiculos(velocidadVehic, longitudVehic, fecha, ubicacion):
+    
+    nivel = NivelRiesgoVehiculos(velocidadVehic, longitudVehic)
+
+    if(nivel!="sin datos"): 
+
+        AlertaActiva = Alerta.buscarAlertaActiva('vehiculos',ubicacion)        
+        descripcion = 'Hay vehiculos pesados transitando a baja velocidad'
+
+        if(AlertaActiva==""):
+
+            print("No hay alertas activas para vehiculos lentos en esa ubicacion")
+
+            if(nivel != "nulo"):
+                nuevaAlerta = Alerta('vehiculos',descripcion, ubicacion, nivel, fecha, None)
+                nuevaAlerta.cargarAlerta()           
+
+                print("NUEVA ALERTA PARA VEHICULOS, NIVEL: "+nivel)
+                print("-----------------------------")
+
+            else:
+                print("No hay nueva alerta por ser nivel de VEHICULOS Nulo") 
+                print("-----------------------------")
+
+        else:
+
+            print("El nivel de la alerta activa de VEHICULOS es: ",AlertaActiva['nivel'])
+            print("nivel nuevo de VEHICULOS: ",nivel) 
+
+            if(nivel!=AlertaActiva['nivel']):
+                
+                idAlertaAnterior = AlertaActiva['_id']
+                Alerta.inactivarAlerta(idAlertaAnterior,fecha)            
+                print("Se inactiva Alerta anterior")
+
+                if(nivel!="nulo"):
+                    nuevaAlerta = Alerta('vehiculos', descripcion, ubicacion, nivel, fecha, None)
+                    nuevaAlerta.cargarAlerta()                
+
+                    print("NUEVA ALERTA PARA VEHICULOS, NIVEL: "+nivel)
+                    print("-----------------------------") 
+
+                else:
+                    print("No hay nueva alerta por ser nivel de VEHICULOS Nulo") 
                     print("-----------------------------")   
                 
             else:

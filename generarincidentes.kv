@@ -1,13 +1,49 @@
-<Contenedor>:
+WindowManager:
+    MainWindow:
+    SecondWindow:
+    GenerarUnIncidente:
+
+<MainWindow>:
+    name: "main"
+
+    GridLayout:
+        cols:1
+
+        GridLayout:
+            cols: 2
+
+            Label:
+                text: "Password: "
+
+            TextInput:
+                id: passw
+                multiline: False
+
+        Button:
+            text: "Submit"
+            on_release:
+                app.root.current = "second" if passw.text == "nico" else "main"
+                root.manager.transition.direction = "left"
+
+<SecondWindow>:
+    name: "second"
+
+    Button:
+        text: "Generar un incidente"
+        on_release:
+            app.root.current = "generar"
+            root.manager.transition.direction = "right"
+
+<GenerarUnIncidente>:
+    name: "generar"
 
     tipo : tipo
     comentario : comentario
     tramo: tramo
-
+    
     GridLayout:
-        cols : 1
-        size: root.width - 200, root.height -200
-        pos: 100, 100
+        cols : 1      
+        
 
         GridLayout:
             cols : 2
@@ -39,3 +75,6 @@
             on_press: root.generarIncidente()
             pos:(300,350)
             size_hint: (.25, .18)
+            on_release:
+                app.root.current = "second"
+                root.manager.transition.direction = "left"

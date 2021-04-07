@@ -85,11 +85,13 @@ def UltimasAlertas():
     return jsonify({'result':'success', 'alertas': datosJson})
 
 
-def tiempoReal(fecha, ubicacion, temperatura, humedad, presion, velocidadViento, milimetrosLluvia, puntoRocio, velocidadVehic, longitudVehic):
-              
+def tiempoReal(fecha, ubicacion, temperatura, humedad, presion, velocidadViento, milimetrosLluvia, puntoRocio, velocidadVehic, longitudVehic, existenciaHumo):
+         
     calculos.AlertasLluvia(milimetrosLluvia, fecha, ubicacion)
     calculos.AlertasViento(velocidadViento, fecha, ubicacion)
     calculos.AlertasNiebla(temperatura, velocidadViento, presion, puntoRocio, fecha, ubicacion)
+    calculos.AlertasHumo(existenciaHumo, fecha, ubicacion)
+    calculos.AlertasVehiculos(velocidadVehic, longitudVehic, fecha, ubicacion)
     
 
 @app.route('/estadisticasGenerales', methods=['POST'])
@@ -354,13 +356,13 @@ fechaHasta1 = datetime.now()
 fechaHasta= datetime(fechaHasta1.year, fechaHasta1.month, fechaHasta1.day, 23, 59, 59, 00000)
 fechaHasta= "{}-{}-{}T{}:{}".format(fechaHasta.year, fechaHasta.strftime("%m"), fechaHasta.strftime("%d"),fechaHasta.strftime("%H"),fechaHasta.strftime("%M"))
 
-
-
 global tipoRiesgo
 tipoRiesgo = ""
 
 global tramoRuta
 tramoRuta = ""
+
+
 
 if __name__ == "__main__":
     app.run(debug=True,

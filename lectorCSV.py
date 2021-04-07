@@ -1,5 +1,6 @@
 import pandas as pd
 import app
+import receptor
 from datetime import datetime
 import time
 import numpy as np
@@ -14,10 +15,11 @@ def leerCSV(nombre):
     print(len(df))
     print(df.head())
             
-            # range(10)
-    for i in range(len(df)):
+            # range(10) range(len(df))
+    for i in range(2):
         
         fechaLectura = df.loc[i, "Fecha"]
+        print(fechaLectura)
         ubicacion = df.loc[i, "Ubicacion"]
         temperatura = df.loc[i, "Temperatura"]  
         humedad =  df.loc[i, "Humedad"]   
@@ -27,11 +29,16 @@ def leerCSV(nombre):
         puntoRocio =  df.loc[i, "PuntoRocio"]
         velocidadVehic =  df.loc[i, "VelocidadVehiculo"]
         longitudVehic =  df.loc[i, "LongitudVehiculo"]
+        existenciaHumo = df.loc[i, "Humo"]
+        
         
         #fecha = datetime.strptime(fechaLectura, '%Y-%m-%d %H:%M:%S.%f')
-        fecha = datetime.strptime(fechaLectura, '%Y-%m-%d %H:%M:%S')       
+        #fecha = datetime.strptime(fechaLectura, '%Y-%m-%d %H:%M:%S')       
+        fecha = datetime.strptime(fechaLectura, '%d/%m/%Y %H:%M')  
 
+        datos=[fecha, ubicacion, temperatura, humedad, presion, velocidadViento, milimetrosLluvia, puntoRocio, velocidadVehic, longitudVehic, existenciaHumo]
         
-        app.tiempoReal(fecha, ubicacion, temperatura, humedad, presion, velocidadViento, milimetrosLluvia, puntoRocio, velocidadVehic, longitudVehic)
+        receptor.recibirDatos(datos)
+
         time.sleep(1)
         
