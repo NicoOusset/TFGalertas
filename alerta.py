@@ -341,6 +341,40 @@ class Alerta:
         return resultados
 
 
+    def informePorTramoTipoNivel(tramo, tipo, desde, hasta):
+        
+        tramoRuta = tramo
+        tipoRiesgo = tipo
+        fechaDesde1 = desde
+        fechaHasta1 = hasta   
+        fechaDesde = datetime(fechaDesde1.year, fechaDesde1.month, fechaDesde1.day, fechaDesde1.hour,fechaDesde1.minute,fechaDesde1.second)
+        fechaHasta = datetime(fechaHasta1.year, fechaHasta1.month, fechaHasta1.day, fechaHasta1.hour,fechaHasta1.minute,fechaHasta1.second)
+        print(fechaDesde)
+        print(fechaHasta)
+          
+        ver = cliente[db]['Alertas'].aggregate([
+                                                { "$match" : {'fecha_inicio': {'$lt': fechaHasta, '$gte': fechaDesde} , 'tramo': tramoRuta ,'tipo': tipoRiesgo  } },
+                                                { "$group" : {"_id":"$nivel", "total" : {"$sum":1} } } , 
+                                                { "$sort"  : {"_id":1} }
+                                            ])
+        
+
+        niveles = []
+        cantidades = []
+        resultados = []
+
+        for a in ver:
+            n = a['_id']
+            c = a['total']
+            niveles.append(n)
+            cantidades.append(c)
+
+        resultados = [niveles, cantidades]
+        print(resultados)
+        return resultados
+
+
+
 
     def buscarAlertas(tramo, tipo, desde, hasta):
         

@@ -16,7 +16,7 @@ def leerCSV(nombre):
     print(df.head())
             
             # range(10) range(len(df))
-    for i in range(2):
+    for i in range(len(df)):
         
         fechaLectura = df.loc[i, "Fecha"]
         print(fechaLectura)
@@ -40,5 +40,5 @@ def leerCSV(nombre):
         
         receptor.recibirDatos(datos)
 
-        time.sleep(1)
+        #time.sleep(1)
         

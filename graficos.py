@@ -4,7 +4,8 @@ import lectorCSV
 import calculos
 import pandas as pd
 from flask import Flask, render_template, session, request, redirect, url_for, flash, jsonify, json, Response
-
+from datetime import datetime
+from datetime import timedelta 
 import numpy as np
 import os
 import io
@@ -73,8 +74,61 @@ def informeGeneralNivel(desde, hasta):
     return plot_url
 
 #----------------Graficos por tramo Ultimas 24 Horas -----------------
+def informe24Lluvia(tramo): 
+    plot_url = informeTramoTipoNivel('lluvia', tramo)
+    return plot_url
 
+def informe24Niebla(tramo):
+    plot_url = informeTramoTipoNivel('niebla', tramo)
+    return plot_url
 
+def informe24Humo(tramo): 
+    plot_url = informeTramoTipoNivel('humo', tramo)
+    return plot_url
+
+def informe24Viento(tramo): 
+    plot_url = informeTramoTipoNivel('viento', tramo)
+    return plot_url
+    
+def informe24Animales(tramo):
+    plot_url = informeTramoTipoNivel('animales', tramo)
+    return plot_url
+    
+def informe24Vehiculos(tramo): 
+    plot_url = informeTramoTipoNivel('vehiculos', tramo)
+    return plot_url
+    
+def informeTramoTipoNivel(tipo, tramo):
+    
+    desde = datetime.now() - timedelta(days=1)
+    hasta = datetime.now()
+
+    niveles = []
+    cantidades = []
+    plt.clf() 
+    resultados = Alerta.informePorTramoTipoNivel(tramo,tipo, desde, hasta)
+    niveles = resultados[0]
+    cantidades = resultados[1]
+    if(niveles==[]):
+        print("sin informacion")
+        plot_url = "SinDatos"
+
+    else:
+        colores = ['y','r','b','m','g']
+        img= None
+        img = io.BytesIO()
+        #plt.title("niveles")
+        
+        plt.pie(cantidades, labels = niveles, colors = colores, autopct='%1.1f%%',  startangle=90)
+        
+        print(niveles)
+        print(cantidades)
+        
+        plt.savefig(img, format='png')
+        img.seek(0)
+        plot_url = base64.b64encode(img.getvalue()).decode()
+
+    return plot_url
 
 
 
