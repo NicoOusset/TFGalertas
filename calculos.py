@@ -100,11 +100,45 @@ def NivelRiesgoVehiculos(velocidadVehic, longitudVehic):
         velocidadVehic=float(velocidadVehic)
         longitudVehic=float(longitudVehic)
         
-        ''' if(presion > 1020):
-            if(velocidadViento < 10):
-                if(temperatura < 12):
-                    if((temperatura-puntoRocio) <= 1):
-                        nivel = "alto" '''
+        if(longitudVehic !=0 and longitudVehic < 5):
+            if(velocidadVehic  !=0 and velocidadVehic < 20):
+                nivel = "alto" 
+            elif(velocidadVehic < 40):
+                nivel = "leve" 
+            elif(velocidadVehic < 80):
+                nivel = "nulo" 
+            elif(velocidadVehic >= 80):
+                nivel = "nulo"
+
+        elif(longitudVehic < 10):
+            if(velocidadVehic  !=0 and velocidadVehic < 20):
+                nivel = "alto" 
+            elif(velocidadVehic < 40):
+                nivel = "moderado" 
+            elif(velocidadVehic < 80):
+                nivel = "nulo" 
+            elif(velocidadVehic >= 80):
+                nivel = "nulo"
+
+        elif(longitudVehic < 20):
+            if(velocidadVehic  !=0 and velocidadVehic < 20):
+                nivel = "extrema" 
+            elif(velocidadVehic < 40):
+                nivel = "alto" 
+            elif(velocidadVehic < 80):
+                nivel = "leve" 
+            elif(velocidadVehic >= 80):
+                nivel = "nulo"
+
+        elif(longitudVehic >= 20):
+            if(velocidadVehic  !=0 and velocidadVehic < 20):
+                nivel = "extrema" 
+            elif(velocidadVehic < 40):
+                nivel = "extrema" 
+            elif(velocidadVehic < 80):
+                nivel = "leve" 
+            elif(velocidadVehic >= 80):
+                nivel = "nulo"
 
     else:
         nivel = "sin datos"    
@@ -348,7 +382,7 @@ def AlertasVehiculos(velocidadVehic, longitudVehic, fecha, ubicacion):
     if(nivel!="sin datos"): 
 
         AlertaActiva = Alerta.buscarAlertaActiva('vehiculos',ubicacion)        
-        descripcion = 'Hay vehiculos pesados transitando a baja velocidad'
+        descripcion = 'Un vehiculo de '+str(longitudVehic)+'m de largo transita a '+str(velocidadVehic)+' km/h'
 
         if(AlertaActiva==""):
 

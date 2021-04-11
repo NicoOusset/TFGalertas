@@ -109,10 +109,10 @@
                     <p class="card-text">Comentario: {{ comentario }}</p>
                     <p class="card-text">Fecha de creación: {{ fechaCreacion }}</p>
                     {% if estado == 'NoVisualizado' %}
-                    <p class="card-text">Estado anterior del incidente: No visualizado</p>
-                    <p class="card-text">Estado actual del incidente: Visualizado</p>
+                        <p class="card-text">Estado anterior del incidente: No visualizado</p>
+                        <p class="card-text">Estado actual del incidente: Visualizado</p>
                     {% else %}
-                    <p class="card-text">Estado del incidente: {{ estado }}</p>
+                        <p class="card-text">Estado del incidente: {{ estado }}</p>
                     {% endif %}
 
                 </div>
@@ -130,12 +130,9 @@
                         <div class="col-9">
                             <select class="custom-select" id="tipo">
                                 <option selected value="-">Seleccione el Tipo de Riesgo</option>
-                                <option value="niebla">Niebla</option>
-                                <option value="lluvia">Lluvia</option>
-                                <option value="humo">Humo</option>
-                                <option value="viento">Viento</option>
-                                <option value="animales">Animales</option>
-                                <option value="vehiculos">Vehículos lentos</option>
+                                {% for Tip in Tipos %}
+                                    <option value="{{Tip['nombre']}}">{{Tip['descripcion']}}</option>
+                                {% endfor %}
                                 <option value="otros">Otros</option>
                             </select>
                         </div>
@@ -147,10 +144,9 @@
                         <div class="col-9">
                             <select class="custom-select" id="nivel">
                                 <option selected value="-">Seleccione el Nivel de Riesgo</option>
-                                <option value="leve">Leve</option>
-                                <option value="moderado">Moderado</option>
-                                <option value="alto">Alto</option>
-                                <option value="extrema">Extrema</option>
+                                {% for Niv in Niveles %}
+                                    <option value="{{Niv['nombre']}}">{{Niv['descripcion']}}</option>
+                                {% endfor %}
                             </select>
                         </div>
                     </div>
@@ -161,24 +157,9 @@
                         <div class="col-9">
                             <select class="custom-select" id="tramo">
                                 <option selected value="-">Seleccione el Tramo</option>
-                                <option value="Rumi Punco - Pueblo Viejo">Rumi Punco - Pueblo Viejo</option>
-                                <option value="Pueblo Viejo - Rio el Sueño">Pueblo Viejo - Rio el Sueño</option>
-                                <option value="Rio el Sueño - Huasa Pampa">Rio el Sueño - Huasa Pampa</option>
-                                <option value="Huasa Pampa - Rio Marapa">Huasa Pampa - Rio Marapa</option>
-                                <option value="Rio Marapa - Villa Belgrano">Rio Marapa - Villa Belgrano</option>
-                                <option value="Villa Belgrano - Aguilares">Villa Belgrano - Aguilares</option>
-                                <option value="Aguilares - Concepcion">Aguilares - Concepcion</option>
-                                <option value="Concepcion - Rio Seco">Concepcion - Rio Seco</option>
-                                <option value="Rio Seco - Monteros">Rio Seco - Monteros</option>
-                                <option value="Monteros - Rio Caspichango">Monteros - Rio Caspichango</option>
-                                <option value="Rio Caspichango - Interseccion ruta 322">Rio Caspichango - Interseccion
-                                    ruta 322
-                                </option>
-                                <option value="Interseccion ruta 322 - Interseccion ruta 321">Interseccion ruta 322 -
-                                    Interseccion
-                                    ruta 321</option>
-                                <option value="Interseccion ruta 321 - S M de Tuc">Interseccion ruta 321 - S M de Tuc
-                                </option>
+                                {% for T in Tramos %}
+                                    <option value="{{T['nombre']}}">{{T['nombre']}}</option>
+                                {% endfor %}
 
                             </select>
                         </div>

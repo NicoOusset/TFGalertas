@@ -23,8 +23,6 @@
             var img3 = document.getElementById("img3")
             img3.style.display = "none";
 
-            //var sinDatosTipo = document.getElementById("sinDatosTipo")
-            //sinDatosTipo.style.display = "none";
             var sinDatosNivel = document.getElementById("sinDatosNivel")
             sinDatosNivel.style.display = "none";
             var sinDatosNivelSemana = document.getElementById("sinDatosNivelSemana")
@@ -60,17 +58,7 @@
                     alert(data.error);
                     return
                 }
-                else {
-
-                    /*var imgTipos = data.imagenTipos   
-                    if(imgTipos=="SinDatos"){
-                        sinDatosTipo.style.display = "block";
-                    }
-                    else{
-                        img0.style.display = "block";
-                        img0.setAttribute("src",'data:image/png;base64,'+imgTipos);
-                        
-                    } */
+                else {                    
 
                     var imgNiveles = data.imagenNiveles
                     if (imgNiveles == "SinDatos") {
@@ -101,7 +89,7 @@
                         img3.style.display = "block";
                         img3.setAttribute("src", 'data:image/png;base64,' + imgNivelesMes);
                     }
-
+                    document.getElementById("contenido").style.visibility='visible';
                 }
             });
 
@@ -183,12 +171,9 @@
             <div class="col-3">
                 <select class="custom-select" style="width:230px" id="tipo">
                     <option selected value="-">Seleccione el Tipo de Riesgo</option>
-                    <option value="niebla">Niebla</option>
-                    <option value="lluvia">Lluvia</option>
-                    <option value="humo">Humo</option>
-                    <option value="viento">Viento</option>
-                    <option value="animales">Animalsssses</option>
-                    <option value="vehiculos">Vehículos lentos</option>
+                    {% for Tip in Tipos %}
+                        <option value="{{Tip['nombre']}}">{{Tip['descripcion']}}</option>
+                    {% endfor %}
                 </select>
             </div>
 
@@ -214,69 +199,53 @@
         </div>
        
         <br>
+        <div id="contenido" style="visibility: hidden;"> 
         <div class="row" style="text-align: center;">
+
             <div class="col-4">
-                <div class="card border-light mb-3" style="max-width: 20rem;">
+                <div class="card border-light mb-3" >
                     <div class="card-header">Distribución por nivel de riesgo</div>
                     <h6 id="sinDatosNivel" style="display: none; margin-top: 10px;">No hay datos para ese periodo de tiempo</h6>
                     <img class="card-img-top" src="" id="img0" alt="alt" style=" display: none;" onclick="AgrandarImagen('Distribución por nivel de riesgo','img0')">
                 </div>
 
             </div>
-            <div class="col-8">
-                <div class="card border-light mb-3">
-                    <div class="card-header">Distribución por tramos</div>
-                    <div class="card-body">
-                        <p class="card-text">
-                            <!-- <img src="mapa.png" alt=""
-                                style="width: 70%; text-align: center; margin-left: 50px; padding-top: 10px;"> -->
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <div class="row" style="text-align: center;">
             <div class="col-4">
-                <div class="card border-light mb-3" style="max-width: 20rem;">
-                    <div class="card-header">Alertas por nivel de riesgo según mes del año</div>
+                <div class="card border-light mb-3" >
+                    <div class="card-header">Alertas por nivel de riesgo - mes del año</div>
                     <h6 id="sinDatosNivelMes" style="display: none; margin-top: 10px;">No hay datos para ese periodo de tiempo</h6>
                     <img class="card-img-top" src="" id="img3" alt="alt" style=" display: none; " onclick="AgrandarImagen('Alertas por nivel de riesgo según mes del año','img3')">
                 </div>
             </div>
+            
             <div class="col-4">
-                <div class="card border-light mb-3" style="max-width: 20rem;">
-                    <div class="card-header">Alertas por nivel de riesgo según día de la semana</div>
+                <div class="card border-light mb-3" >
+                    <div class="card-header">Alertas por nivel de riesgo - día de la semana</div>
                     <h6 id="sinDatosNivelSemana" style="display: none; margin-top: 10px;">No hay datos para ese periodo de tiempo</h6>
                     <img class="card-img-top" src="" id="img2" alt="alt" style=" display: none; " onclick="AgrandarImagen('Alertas por nivel de riesgo según día de la semana','img2')">
                 </div>
             </div>
-            <div class="col-4">
-                <div class="card border-light mb-3" style="max-width: 20rem;">
-                    <div class="card-header">Alertas por nivel de riesgo según momento del día</div>
-
-                </div>
-            </div>
-           
         </div>
 
-        <div class="modal" id="modal">
-            <div class="modal-content">
-                <header>
-                    <button class="close" onclick="cerrarModal()" style="font-size: small;">x</button>
-                    <h4 style="text-align: center; margin-bottom: 20px; text-decoration: underline;" id="modalTexto"> 
-                    </h4>
-    
-                </header>
-    
-               <div style="text-align: center; color:black ;">
-                    <img src="" id="modalImagen" alt="algo" >
-                </div> 
-    
-            </div>
-        </div>
+    </div>
 
-        <br>
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <header>
+                <button class="close" onclick="cerrarModal()" style="font-size: small;">x</button>
+                <h4 style="text-align: center; margin-bottom: 20px; color: rgb(1, 71, 1);"  id="modalTexto"> 
+                </h4>
+
+            </header>
+
+            <div style="text-align: center; color:black ;">
+                <img src="" id="modalImagen" alt="algo" >
+            </div> 
+
+        </div>
+    </div>
+
 </body>
 
 <script>

@@ -52,11 +52,7 @@
             var row$ = $('<tr/>');
             for (var colIndex = 0; colIndex < 5; colIndex++) {
               var cellValue = datoss[i][titulos[colIndex]];
-
-              /* if(titulos[colIndex]=='fecha_inicio'){
-                  cellValue = datoss[i]['fecha_inicio']['$date'];
-                }*/
-
+              
               if (cellValue == null) cellValue = "";
               if (cellValue == 'NoVisualizado') {
                 cellValue = 'No Visualizado';
@@ -85,7 +81,7 @@
             $('#incidentesTabla').append(row$);
 
           }
-
+          document.getElementById("contenido").style.visibility='visible';
         }
       });
 
@@ -144,12 +140,9 @@
           <div class="col-9">
             <select class="custom-select" id="tipo">
               <option selected value="">Todos los tipos de Riesgo</option>
-              <option value="niebla">Niebla</option>
-              <option value="lluvia">Lluvia</option>
-              <option value="humo">Humo</option>
-              <option value="viento">Viento</option>
-              <option value="animales">Animales</option>
-              <option value="vehiculos">Vehículos lentos</option>
+              {% for Tip in Tipos %}
+                <option value="{{Tip['nombre']}}">{{Tip['descripcion']}}</option>
+              {% endfor %}
               <option value="otros">Otros</option>
             </select>
           </div>
@@ -161,21 +154,9 @@
           <div class="col-9">
             <select class="custom-select" id="tramo">
               <option selected value="">Todos los tramos</option>
-              <option value="Rumi Punco - Pueblo Viejo">Rumi Punco - Pueblo Viejo</option>
-              <option value="Pueblo Viejo - Rio el Sueño">Pueblo Viejo - Rio el Sueño</option>
-              <option value="Rio el Sueño - Huasa Pampa">Rio el Sueño - Huasa Pampa</option>
-              <option value="Huasa Pampa - Rio Marapa">Huasa Pampa - Rio Marapa</option>
-              <option value="Rio Marapa - Villa Belgrano">Rio Marapa - Villa Belgrano</option>
-              <option value="Villa Belgrano - Aguilares">Villa Belgrano - Aguilares</option>
-              <option value="Aguilares - Concepcion">Aguilares - Concepcion</option>
-              <option value="Concepcion - Rio Seco">Concepcion - Rio Seco</option>
-              <option value="Rio Seco - Monteros">Rio Seco - Monteros</option>
-              <option value="Monteros - Rio Caspichango">Monteros - Rio Caspichango</option>
-              <option value="Rio Caspichango - Interseccion ruta 322">Rio Caspichango - Interseccion ruta 322
-              </option>
-              <option value="Interseccion ruta 322 - Interseccion ruta 321">Interseccion ruta 322 - Interseccion
-                ruta 321</option>
-              <option value="Interseccion ruta 321 - S M de Tuc">Interseccion ruta 321 - S M de Tuc</option>
+              {% for T in Tramos %}
+                  <option value="{{T['nombre']}}">{{T['nombre']}}</option>
+              {% endfor %}
 
             </select>
           </div>
@@ -223,29 +204,29 @@
       </div>
       <div class="col-1">
         <div class="col-1">
-          <!-- <button type="button" class="btn btn-primary"  style="margin-top: 35px; margin-left: -15px;"
-                  onclick="generar()">+</button> -->
           <a class="btn btn-danger" href="/generarIncidente">+</a>
         </div>
       </div>
     </div>
-    <table class="table table-striped" id="incidentesTabla">
-      <thead>
-        <tr class="table-primary">
 
-          <td>Tipo</td>
-          <td>Tramo</td>
-          <td>Comentario</td>
-          <td>Fecha y Hora</td>
-          <td>Estado</td>
-          <td>Detalle</td>
-        </tr>
-      </thead>
-      <tbody id="incidentesDatos">
+    <div id="contenido" style="visibility: hidden;"> 
+      <table class="table table-striped" id="incidentesTabla">
+        <thead>
+          <tr class="table-primary">
 
-      </tbody>
-    </table>
+            <td>Tipo</td>
+            <td>Tramo</td>
+            <td>Comentario</td>
+            <td>Fecha y Hora</td>
+            <td>Estado</td>
+            <td>Detalle</td>
+          </tr>
+        </thead>
+        <tbody id="incidentesDatos">
 
+        </tbody>
+      </table>
+    </div>
   </div>
 
 </body>

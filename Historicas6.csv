@@ -1,0 +1,120 @@
+;Fecha;Ubicacion;Temperatura;Humedad;Presion;VelocidadViento;DireccionViento;Precipitacion;PuntoRocio;VelocidadVehiculo;LongitudVehiculo;Humo
+0;14/08/2020 21:26;Monteros - Rio Caspichango;;;;;;;;33;0;0
+1;29/04/2020 16:13;Aguilares - Concepcion;;;;;;;;88;9;0
+2;16/04/2020 11:15;Monteros - Rio Caspichango;;;;;;;;83;12;1
+3;24/12/2020 17:45;Rumi Punco - Pueblo Viejo;;;;;;;;116;6;0
+4;10/02/2020 15:14;Concepcion - Rio Seco;;;;;;;;89;17;1
+5;29/10/2020 20:00;Interseccion ruta 322 - Interseccion ruta 321;;;;;;;;4;13;0
+6;30/05/2020 20:07;Villa Belgrano - Aguilares;;;;;;;;59;11;0
+7;18/02/2020 12:23;Concepcion - Rio Seco;;;;;;;;83;5;0
+8;27/11/2020 14:17;Interseccion ruta 322 - Interseccion ruta 321;;;;;;;;41;0;1
+9;02/01/2020 13:01;Rio Seco - Monteros;;;;;;;;77;13;1
+10;02/09/2020 14:54;Interseccion ruta 321 - S M de Tuc;;;;;;;;84;11;1
+11;16/06/2020 20:24;Interseccion ruta 321 - S M de Tuc;;;;;;;;89;0;0
+12;09/12/2020 22:21;Interseccion ruta 321 - S M de Tuc;;;;;;;;114;11;0
+13;07/04/2020 18:26;Pueblo Viejo - Rio el Sueño;;;;;;;;107;6;0
+14;27/01/2021 09:25;Rio el Sueño - Huasa Pampa;;;;;;;;98;19;1
+15;25/03/2020 01:04;Monteros - Rio Caspichango;;;;;;;;112;20;1
+16;02/12/2020 15:34;Huasa Pampa - Rio Marapa;;;;;;;;104;14;1
+17;10/03/2021 00:16;Aguilares - Concepcion;;;;;;;;58;4;0
+18;21/04/2021 20:36;Interseccion ruta 322 - Interseccion ruta 321;;;;;;;;108;0;1
+19;23/06/2020 15:28;Concepcion - Rio Seco;;;;;;;;73;9;0
+20;30/06/2020 04:09;Rio el Sueño - Huasa Pampa;;;;;;;;33;19;1
+21;16/02/2021 22:05;Rumi Punco - Pueblo Viejo;;;;;;;;82;13;1
+22;12/01/2020 01:21;Huasa Pampa - Rio Marapa;;;;;;;;102;2;0
+23;05/02/2020 22:33;Interseccion ruta 322 - Interseccion ruta 321;;;;;;;;18;13;0
+24;01/09/2020 04:41;Rio Marapa - Villa Belgrano;;;;;;;;71;16;1
+25;16/07/2020 03:32;Rio Caspichango - Interseccion ruta 322;;;;;;;;24;6;0
+26;07/01/2020 09:35;Rio Marapa - Villa Belgrano;;;;;;;;23;16;1
+27;16/04/2020 16:23;Villa Belgrano - Aguilares;;;;;;;;1;19;0
+28;30/01/2020 09:03;Rumi Punco - Pueblo Viejo;;;;;;;;116;4;0
+29;26/12/2020 02:33;Rio Marapa - Villa Belgrano;;;;;;;;103;5;0
+30;25/09/2020 06:43;Aguilares - Concepcion;;;;;;;;3;5;0
+31;10/01/2021 19:54;Monteros - Rio Caspichango;;;;;;;;91;17;0
+32;20/02/2021 05:42;Rio el Sueño - Huasa Pampa;;;;;;;;72;16;1
+33;05/04/2021 19:11;Monteros - Rio Caspichango;;;;;;;;7;17;1
+34;24/10/2020 04:58;Pueblo Viejo - Rio el Sueño;;;;;;;;112;14;0
+35;29/03/2021 08:13;Rio Marapa - Villa Belgrano;;;;;;;;78;1;0
+36;07/10/2020 07:07;Interseccion ruta 321 - S M de Tuc;;;;;;;;19;17;0
+37;12/03/2021 22:32;Rio Marapa - Villa Belgrano;;;;;;;;51;0;1
+38;01/03/2020 03:24;Villa Belgrano - Aguilares;;;;;;;;3;18;0
+39;20/03/2020 07:46;Pueblo Viejo - Rio el Sueño;;;;;;;;108;8;1
+40;17/04/2020 22:09;Rio Caspichango - Interseccion ruta 322;;;;;;;;43;5;0
+41;12/02/2021 04:15;Interseccion ruta 322 - Interseccion ruta 321;;;;;;;;84;17;0
+42;30/11/2020 03:46;Rio Marapa - Villa Belgrano;;;;;;;;91;2;1
+43;15/02/2020 19:32;Concepcion - Rio Seco;;;;;;;;111;5;1
+44;02/12/2020 06:08;Pueblo Viejo - Rio el Sueño;;;;;;;;10;19;1
+45;04/06/2020 21:16;Interseccion ruta 321 - S M de Tuc;;;;;;;;88;20;1
+46;19/01/2021 10:23;Aguilares - Concepcion;;;;;;;;65;18;0
+47;11/04/2021 16:58;Pueblo Viejo - Rio el Sueño;;;;;;;;84;3;1
+48;16/02/2020 17:01;Rio Marapa - Villa Belgrano;;;;;;;;109;6;0
+49;03/11/2020 09:39;Rio Caspichango - Interseccion ruta 322;;;;;;;;38;7;0
+50;07/05/2020 19:29;Rio el Sueño - Huasa Pampa;;;;;;;;44;7;0
+51;12/10/2020 03:31;Rio Marapa - Villa Belgrano;;;;;;;;107;5;1
+52;12/09/2020 11:07;Interseccion ruta 321 - S M de Tuc;;;;;;;;59;2;1
+53;13/08/2020 22:17;Interseccion ruta 322 - Interseccion ruta 321;;;;;;;;91;17;1
+54;03/02/2021 20:21;Pueblo Viejo - Rio el Sueño;;;;;;;;119;20;1
+55;04/10/2020 07:22;Rio el Sueño - Huasa Pampa;;;;;;;;50;2;1
+56;22/02/2020 10:42;Concepcion - Rio Seco;;;;;;;;16;8;1
+57;05/03/2020 17:31;Rio Caspichango - Interseccion ruta 322;;;;;;;;116;17;1
+58;14/11/2020 23:32;Concepcion - Rio Seco;;;;;;;;81;13;0
+59;29/01/2021 19:15;Rio Caspichango - Interseccion ruta 322;;;;;;;;49;15;1
+60;14/04/2021 20:32;Rio Marapa - Villa Belgrano;;;;;;;;0;9;0
+61;24/05/2020 18:13;Villa Belgrano - Aguilares;;;;;;;;37;0;0
+62;03/04/2021 10:57;Rio Marapa - Villa Belgrano;;;;;;;;100;13;1
+63;26/02/2021 16:14;Rio Caspichango - Interseccion ruta 322;;;;;;;;110;14;1
+64;19/10/2020 18:50;Interseccion ruta 321 - S M de Tuc;;;;;;;;10;14;1
+65;11/04/2021 02:49;Aguilares - Concepcion;;;;;;;;72;16;0
+66;01/01/2021 12:16;Rio Marapa - Villa Belgrano;;;;;;;;52;18;1
+67;08/03/2020 09:26;Rumi Punco - Pueblo Viejo;;;;;;;;72;9;0
+68;02/06/2020 15:54;Interseccion ruta 321 - S M de Tuc;;;;;;;;102;8;0
+69;06/11/2020 02:46;Huasa Pampa - Rio Marapa;;;;;;;;93;12;1
+70;14/07/2020 15:02;Rio Marapa - Villa Belgrano;;;;;;;;0;16;1
+71;18/04/2020 18:39;Pueblo Viejo - Rio el Sueño;;;;;;;;71;11;0
+72;13/02/2020 21:53;Huasa Pampa - Rio Marapa;;;;;;;;114;13;1
+73;10/08/2020 09:28;Pueblo Viejo - Rio el Sueño;;;;;;;;19;18;1
+74;09/10/2020 12:07;Rio el Sueño - Huasa Pampa;;;;;;;;90;19;0
+75;10/03/2020 23:34;Huasa Pampa - Rio Marapa;;;;;;;;12;3;1
+76;26/06/2020 13:17;Monteros - Rio Caspichango;;;;;;;;70;8;0
+77;08/12/2020 08:40;Rio Caspichango - Interseccion ruta 322;;;;;;;;39;4;1
+78;15/10/2020 08:57;Rio Seco - Monteros;;;;;;;;11;4;0
+79;10/03/2020 09:40;Villa Belgrano - Aguilares;;;;;;;;95;6;1
+80;04/01/2020 10:04;Rio Marapa - Villa Belgrano;;;;;;;;43;8;1
+81;31/07/2020 02:53;Rio Caspichango - Interseccion ruta 322;;;;;;;;32;4;1
+82;24/03/2021 02:38;Rio Caspichango - Interseccion ruta 322;;;;;;;;118;18;1
+83;24/01/2021 02:02;Monteros - Rio Caspichango;;;;;;;;50;10;0
+84;09/03/2020 06:42;Rio Caspichango - Interseccion ruta 322;;;;;;;;33;20;1
+85;06/06/2020 02:14;Rio Marapa - Villa Belgrano;;;;;;;;17;3;1
+86;05/07/2020 19:29;Villa Belgrano - Aguilares;;;;;;;;15;6;0
+87;10/07/2020 20:49;Monteros - Rio Caspichango;;;;;;;;62;15;1
+88;07/12/2020 18:56;Interseccion ruta 322 - Interseccion ruta 321;;;;;;;;5;8;0
+89;22/01/2020 13:42;Rio Seco - Monteros;;;;;;;;23;16;0
+90;05/01/2021 12:37;Rio Seco - Monteros;;;;;;;;45;19;0
+91;12/07/2020 10:06;Rio Marapa - Villa Belgrano;;;;;;;;73;20;1
+92;17/07/2020 08:39;Pueblo Viejo - Rio el Sueño;;;;;;;;16;4;0
+93;06/03/2020 20:01;Villa Belgrano - Aguilares;;;;;;;;33;0;1
+94;23/07/2020 18:26;Huasa Pampa - Rio Marapa;;;;;;;;18;18;1
+95;28/02/2020 18:08;Rio Marapa - Villa Belgrano;;;;;;;;85;14;0
+96;12/04/2020 20:38;Rio Seco - Monteros;;;;;;;;17;8;1
+97;25/02/2020 04:40;Interseccion ruta 322 - Interseccion ruta 321;;;;;;;;2;3;1
+98;08/12/2020 20:39;Interseccion ruta 322 - Interseccion ruta 321;;;;;;;;109;16;1
+99;09/03/2021 05:18;Huasa Pampa - Rio Marapa;;;;;;;;63;17;1
+100;17/02/2020 14:43;Interseccion ruta 321 - S M de Tuc;;;;;;;;32;18;1
+101;27/02/2021 18:59;Rio Seco - Monteros;;;;;;;;104;4;0
+102;01/09/2020 11:45;Villa Belgrano - Aguilares;;;;;;;;67;13;1
+103;28/02/2020 20:56;Aguilares - Concepcion;;;;;;;;50;0;0
+104;03/03/2021 07:13;Rio Marapa - Villa Belgrano;;;;;;;;9;19;1
+105;30/05/2020 12:10;Rio Caspichango - Interseccion ruta 322;;;;;;;;29;8;1
+106;16/10/2020 15:27;Rio el Sueño - Huasa Pampa;;;;;;;;41;0;0
+107;02/05/2020 17:23;Huasa Pampa - Rio Marapa;;;;;;;;115;7;1
+108;24/04/2020 22:53;Interseccion ruta 321 - S M de Tuc;;;;;;;;92;12;1
+109;19/03/2021 15:51;Interseccion ruta 321 - S M de Tuc;;;;;;;;44;4;0
+110;23/12/2020 12:09;Huasa Pampa - Rio Marapa;;;;;;;;9;9;1
+111;20/04/2020 04:59;Rio el Sueño - Huasa Pampa;;;;;;;;111;16;1
+112;18/10/2020 15:38;Aguilares - Concepcion;;;;;;;;81;19;0
+113;23/02/2020 00:45;Villa Belgrano - Aguilares;;;;;;;;70;7;0
+114;13/04/2020 09:49;Huasa Pampa - Rio Marapa;;;;;;;;76;16;1
+115;12/03/2021 06:11;Aguilares - Concepcion;;;;;;;;87;11;0
+116;17/11/2020 07:02;Interseccion ruta 322 - Interseccion ruta 321;;;;;;;;61;14;0
+117;16/12/2020 20:30;Rio Marapa - Villa Belgrano;;;;;;;;58;16;1
+118;07/03/2020 18:02;Rio Marapa - Villa Belgrano;;;;;;;;61;16;1

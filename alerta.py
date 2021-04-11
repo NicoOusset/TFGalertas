@@ -3,7 +3,6 @@ import pymongo
 from bson.json_util import dumps
 from datetime import datetime
 import pprint
-
 import matplotlib.pyplot as plt 
 
 db = 'tfgAlertas'
@@ -47,8 +46,7 @@ class Alerta:
         alertaActiva = cliente[db]['Alertas'].find({'tipo': tipo,'tramo': ubicacion, 'activa': "True"  })
         resultado = ""       
         
-        for r in alertaActiva:
-            #resultado = r['nivel']
+        for r in alertaActiva:            
             resultado = r
 
         return resultado
@@ -56,21 +54,12 @@ class Alerta:
     
     def inactivarAlerta(idAlerta, fecha):
         cliente[db]['Alertas'].update_one({'_id': idAlerta}, {'$set': {'activa': 'False', 'fecha_fin': fecha}})
-          
 
     def buscarUltimasAlertas():
         
         ultimasAlertas = cliente[db]['Alertas'].find().sort("fecha_inicio", pymongo.DESCENDING).limit(10)
         
         return ultimasAlertas
-
-        '''resultado = []  
-        for r in ultimasAlertas:
-            r1 = r['fecha_inicio'],' - ',r['_id']
-            resultado.append(r1)
-
-        print(resultado)
-        return resultado'''
         
 
     def informeGeneralTipo(desde, hasta):
@@ -181,8 +170,7 @@ class Alerta:
             meses.append(m)
             niveles.append(n)
             cantidades.append(c)
-            #resultados.append(a)
-
+            
         resultados = [meses, niveles, cantidades]
         print(resultados)
         return resultados
@@ -212,8 +200,7 @@ class Alerta:
             dias.append(d)
             niveles.append(n)
             cantidades.append(c)
-            #resultados.append(a)
-
+           
         resultados = [dias, niveles, cantidades]
         print(resultados)
         return resultados
@@ -301,8 +288,7 @@ class Alerta:
             meses.append(m)
             niveles.append(n)
             cantidades.append(c)
-            #resultados.append(a)
-
+            
         resultados = [meses, niveles, cantidades]
         print(resultados)
         return resultados
@@ -380,7 +366,8 @@ class Alerta:
         
         tramoRuta  = tramo
         tipoAlerta = tipo
-    
+
+           
         if desde == "":
             fechaDesde = datetime(2020, 1, 1)
         else:            
@@ -395,13 +382,19 @@ class Alerta:
         print(fechaDesde)   
         print(fechaHasta)
         
+        if (tramoRuta=="" and tipoAlerta==""):
 
-        ttt = ".*"+tipoAlerta+".*"
-        mmm=".*"+tramoRuta+".*"
+            ttt = ".*"+tipoAlerta+".*"
+            mmm=".*"+tramoRuta+".*"
 
-        alertas = cliente[db]['Alertas'].find({'tipo': { "$regex": ttt }  ,'tramo': { "$regex": mmm }, 'fecha_inicio': {'$lt': fechaHasta, '$gte': fechaDesde} }).sort("fecha_inicio", pymongo.ASCENDING)       
-        #"/.*"+tipoAlerta+".*/i"
+            alertas = cliente[db]['Alertas'].find({'tipo': { "$regex": ttt }  ,'tramo': { "$regex": mmm }, 'fecha_inicio': {'$lt': fechaHasta, '$gte': fechaDesde} }).sort("fecha_inicio", pymongo.ASCENDING).limit(20)       
+                
+        else: 
 
+            ttt = ".*"+tipoAlerta+".*"
+            mmm=".*"+tramoRuta+".*"
+
+            alertas = cliente[db]['Alertas'].find({'tipo': { "$regex": ttt }  ,'tramo': { "$regex": mmm }, 'fecha_inicio': {'$lt': fechaHasta, '$gte': fechaDesde} }).sort("fecha_inicio", pymongo.ASCENDING)       
+           
         return alertas       
-        
         

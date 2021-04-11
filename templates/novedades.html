@@ -35,14 +35,9 @@
               var row$ = $('<tr/>');
               for (var colIndex = 0; colIndex < 5; colIndex++) {
                 var cellValue = datoss[i][titulos[colIndex]];
-
-               /* if(titulos[colIndex]=='fecha_inicio'){
-                  cellValue = datoss[i]['fecha_inicio']['$date'];
-                }*/
           
                 if (cellValue == null) cellValue = "";
                 
-
                 if(cellValue=='extrema'){
                   cellValue= cellValue+ ' <img src="{{ url_for("static", filename="extrema.png") }}" style="width: 25px;" alt="">';
                 }

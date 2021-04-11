@@ -1,6 +1,9 @@
 from conexion import Conexion
 from datetime import datetime
 from alerta import Alerta
+from tramo import Tramo
+from tipo import Tipo
+from nivel import Nivel
 from incidente import Incidente
 from bson.json_util import dumps
 import lectorCSV
@@ -28,11 +31,14 @@ def novedades():
 
 @app.route('/buscador', methods=['POST', 'GET'])
 def buscador():
-    return render_template('buscador.html')
+    Tramos = list(Tramo.buscarTramos())
+    Tipos = list(Tipo.buscarTipos())
+    return render_template('buscador.html' , Tramos=Tramos, Tipos=Tipos)
 
 @app.route('/ultimas24hs', methods=['POST', 'GET'])
 def ultimas24hs():
-    return render_template('ultimas24hs.html')
+    Tramos = list(Tramo.buscarTramos())
+    return render_template('ultimas24hs.html', Tramos=Tramos)
 
 @app.route('/informes', methods=['POST', 'GET'])
 def informes():
@@ -40,20 +46,26 @@ def informes():
 
 @app.route('/informesPorTipo', methods=['POST', 'GET'])
 def informesPorTipo():
-    print(tipoRiesgo)
-    return render_template('informesPorTipo.html', fechaDesde=fechaDesde, fechaHasta=fechaHasta , tipoRiesgo=tipoRiesgo)
+    Tipos = list(Tipo.buscarTipos())
+    return render_template('informesPorTipo.html', Tipos=Tipos, fechaDesde=fechaDesde, fechaHasta=fechaHasta , tipoRiesgo=tipoRiesgo)
 
 @app.route('/informesPorTramo', methods=['POST', 'GET'])
 def informesPorTramo():
-    return render_template('informesPorTramo.html', fechaDesde=fechaDesde, fechaHasta=fechaHasta, tipoRiesgo=tipoRiesgo ,tramoRuta=tramoRuta)
+    Tramos = list(Tramo.buscarTramos())
+    Tipos = list(Tipo.buscarTipos())
+    return render_template('informesPorTramo.html', fechaDesde=fechaDesde, fechaHasta=fechaHasta, tipoRiesgo=tipoRiesgo ,tramoRuta=tramoRuta, Tramos=Tramos, Tipos=Tipos)
 
 @app.route('/incidentes', methods=['POST', 'GET'])
 def incidentes():
-    return render_template('incidentes.html')
+    Tramos = list(Tramo.buscarTramos())
+    Tipos = list(Tipo.buscarTipos())
+    return render_template('incidentes.html', Tramos=Tramos, Tipos=Tipos)
 
 @app.route('/generarIncidente', methods=['POST', 'GET'])
 def generarIncidente():
-    return render_template('generarIncidente.html')
+    Tramos = list(Tramo.buscarTramos())
+    Tipos = list(Tipo.buscarTipos())
+    return render_template('generarIncidente.html', Tramos=Tramos, Tipos=Tipos)
 
 @app.route('/leerUnCSV', methods=['POST'])
 def leerUnCSV():
@@ -217,14 +229,14 @@ def buscadorAlertas():
     hasta=request.form.get("hasta")   
     try:
 
-        ultAlertas = list(Alerta.buscarAlertas(tramo, tipo, desde, hasta))
+        Alertas = list(Alerta.buscarAlertas(tramo, tipo, desde, hasta))
         
-        for i in ultAlertas:
+        for i in Alertas:
             
             f = (i['fecha_inicio'])
             i['fecha_inicio'] = "{:02d}-{:02d}-{} {:02d}:{:02d}:{:02d}".format(f.day, f.month, f.year, f.hour, f.minute, f.second)
 
-        datosJson = dumps(ultAlertas)
+        datosJson = dumps(Alertas)
 
     except Exception as e:
         error=str(e)
@@ -265,17 +277,21 @@ def detalleIncidente():
 
     IncidenteBuscado = Incidente.buscarIncidentePorId(idIncidente)
     print(IncidenteBuscado)
-    Tipo = IncidenteBuscado['tipo']
-    Tramo = IncidenteBuscado['tramo']
+    TipoInc = IncidenteBuscado['tipo']
+    TramoInc = IncidenteBuscado['tramo']
     Comentario  = IncidenteBuscado['comentario']
     f = IncidenteBuscado['fecha_creacion']
     FechaCreacion = "{:02d}-{:02d}-{} {:02d}:{:02d}:{:02d}".format(f.day, f.month, f.year, f.hour, f.minute, f.second)
     Estado  = IncidenteBuscado['estado']
 
+    Tramos = list(Tramo.buscarTramos())
+    Tipos = list(Tipo.buscarTipos())
+    Niveles = list(Nivel.buscarNiveles())
+
     if Estado=='NoVisualizado':
         Incidente.modificarEstadoIncidente(idIncidente,"Visualizado")
     
-    return render_template('detalleIncidente.html', idIncidente=idIncidente, tipo=Tipo, tramo=Tramo, comentario=Comentario, fechaCreacion=FechaCreacion, estado=Estado)
+    return render_template('detalleIncidente.html', idIncidente=idIncidente, tipo=TipoInc, tramo=TramoInc, comentario=Comentario, fechaCreacion=FechaCreacion, estado=Estado, Tramos=Tramos, Tipos=Tipos, Niveles=Niveles)
 
 
 

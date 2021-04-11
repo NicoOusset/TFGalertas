@@ -71,7 +71,7 @@
                         img1.style.display = "block";
                         img1.setAttribute("src",'data:image/png;base64,'+imgNiveles);                        
                     }                                                        
-
+                    document.getElementById("contenido").style.visibility='visible';
                 }
             });
 
@@ -170,31 +170,32 @@
         </div>
         <br>
        
-        <div class="row" style="text-align: center;">
-            <div class="col-6">
-                <div class="card border-light mb-3">
-                    <div class="card-header">Distribución por tipo</div>
-                        <h6 id="sinDatosTipo" style="display: none">No hay datos para ese periodo de tiempo</h6>
-                        <img src="" id="img0" alt="algo" style="display: none;" onclick="AgrandarImagen('Distribución por tipo','img0')">
+        <div id="contenido" style="visibility: hidden;">
+            <div class="row" style="text-align: center;">
+                <div class="col-6">
+                    <div class="card border-light mb-3">
+                        <div class="card-header">Distribución por tipo</div>
+                            <h6 id="sinDatosTipo" style="display: none">No hay datos para ese periodo de tiempo</h6>
+                            <img src="" id="img0" alt="algo" style="display: none;" onclick="AgrandarImagen('Distribución por tipo','img0')">
+                    </div>
                 </div>
-            </div>
 
-            <div class="col-6">
-                <div class="card border-light mb-3">
-                    <div class="card-header">Distribución por nivel de riesgo</div> 
-                        <h6 id="sinDatosNivel" style="display: none">No hay datos para ese periodo de tiempo</h6>
-                        <img src="" id="img1" alt="algo" style="display: none;" onclick="AgrandarImagen('Distribución por nivel de riesgo','img1')">
+                <div class="col-6">
+                    <div class="card border-light mb-3">
+                        <div class="card-header">Distribución por nivel de riesgo</div> 
+                            <h6 id="sinDatosNivel" style="display: none">No hay datos para ese periodo de tiempo</h6>
+                            <img src="" id="img1" alt="algo" style="display: none;" onclick="AgrandarImagen('Distribución por nivel de riesgo','img1')">
+                    </div>
                 </div>
             </div>
         </div>
-
     </div>
 
     <div class="modal" id="modal">
         <div class="modal-content">
             <header>
                 <button class="close" onclick="cerrarModal()" style="font-size: small;">x</button>
-                <h4 style="text-align: center; margin-bottom: 20px; text-decoration: underline;" id="modalTexto"> 
+                <h4 style="text-align: center; margin-bottom: 20px; color: rgb(1, 71, 1);"  id="modalTexto"> 
                 </h4>
 
             </header>
