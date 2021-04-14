@@ -73,7 +73,14 @@
     }
 
   </script>
-
+<style>
+   .table-wrapper-scroll-y {
+    position: relative;
+    height: 500px;
+    overflow: auto;
+    display: block; 
+  }
+</style>
 </head>
 
 <body>
@@ -166,8 +173,8 @@
       </div>
     </div>
 
-    <div id="contenido" style="visibility: hidden;">
-      <table class="table table-striped" id="alertasTabla">
+    <div id="contenido" style="visibility: hidden;" class="table-wrapper-scroll-y container">
+      <table class="table table-fixed table-striped" id="alertasTabla">
         <thead>
           <tr class="table-primary">
             <td>Descripción</td>
@@ -177,7 +184,7 @@
             <td>Fecha y Hora</td>
           </tr>
         </thead>
-        <tbody id="alertasDatos">
+        <tbody id="alertasDatos" style="overflow-y:auto">
 
         </tbody>
       </table>

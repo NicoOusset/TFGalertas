@@ -91,7 +91,14 @@
 
 
   </script>
-
+<style>
+  .table-wrapper-scroll-y {
+   position: relative;
+   height: 500px;
+   overflow: auto;
+   display: block; 
+ }
+</style>
 </head>
 
 <body>
@@ -209,7 +216,7 @@
       </div>
     </div>
 
-    <div id="contenido" style="visibility: hidden;"> 
+    <div id="contenido" style="visibility: hidden;" class="table-wrapper-scroll-y container"> 
       <table class="table table-striped" id="incidentesTabla">
         <thead>
           <tr class="table-primary">

@@ -97,6 +97,17 @@ def UltimasAlertas():
     return jsonify({'result':'success', 'alertas': datosJson})
 
 
+def UltimasAlertasMobile():  
+    
+    ultAlertas = list(Alerta.buscarUltimasAlertas())
+    
+    for i in ultAlertas:
+        f = (i['fecha_inicio'])
+        i['fecha_inicio'] = "{:02d}-{:02d}-{} {:02d}:{:02d}:{:02d}".format(f.day, f.month, f.year, f.hour, f.minute, f.second)
+
+    return ultAlertas
+
+
 def tiempoReal(fecha, ubicacion, temperatura, humedad, presion, velocidadViento, milimetrosLluvia, puntoRocio, velocidadVehic, longitudVehic, existenciaHumo):
          
     calculos.AlertasLluvia(milimetrosLluvia, fecha, ubicacion)
