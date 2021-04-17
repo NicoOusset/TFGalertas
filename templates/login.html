@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.css') }}">
+    
+    <style>
+        body {
+            background-image: url("{{'static/'+'login2.png'}}");
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+            background-size: 100%;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4" style="text-align: center;">
+            <div style="margin-top:150px;">
+                <img style="width: 45%;" src="{{ url_for('static', filename='usuario.png') }}" alt="">
+            </div>
+            <div>
+                <h3 style="color:white; margin-top: 35px;">INGRESAR</h3>
+            </div>
+
+            <form action="/login" method="POST">
+                <div class="row" style="margin-top: 50px;">
+                    <div class="col-4" style="text-align: right;">
+                        <img style="width: 25%;" src="{{ url_for('static', filename='usuario2.png') }}" alt="">
+                    </div>
+                    <div class="col-6 form-group">
+                        <input type="text" class="form-control" name="nombreUsuario" placeholder="Nombre de usuario">
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 20px;">
+                    <div class="col-4" style="text-align: right;">
+                        <img style="width: 25%;" src="{{ url_for('static', filename='candado.png') }}" alt="">
+                    </div>
+                    <div class="col-6 form-group">
+                        <input type="password" class="form-control" name="contrasena" placeholder="Contraseña">
+                    </div>
+                </div>
+                <div style="margin-top: 50px;">
+                    <button type="submit" class="btn btn-success"
+                        style="background-color: rgb(137, 199, 137); color: rgb(4, 4, 66);">ACEPTAR</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-4"></div>
+    </div>
+</body>
+
+</html>

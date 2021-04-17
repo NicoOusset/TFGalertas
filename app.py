@@ -5,11 +5,14 @@ from tramo import Tramo
 from tipo import Tipo
 from nivel import Nivel
 from incidente import Incidente
+from usuario import Usuario
 from bson.json_util import dumps
 import lectorCSV
 import calculos
 import pandas as pd
 from flask import Flask, render_template, session, request, redirect, url_for, flash, jsonify, json, Response
+from flask_login import UserMixin, current_user, login_user, logout_user, login_required
+from flask_login import LoginManager
 import graficos
 
 import os
@@ -21,13 +24,18 @@ import base64
 
 app = Flask(__name__)
 
+
 @app.route('/', methods=['POST', 'GET'])
 def index():
     return render_template('index.html')
 
 @app.route('/novedades', methods=['POST', 'GET'])
 def novedades():
-    return render_template('novedades.html')
+    if sesion_usuario != "":
+        if sesion_usuario.is_authenticated:        
+            return render_template('novedades.html')
+    else:
+        return "no tenes permisos"
 
 @app.route('/buscador', methods=['POST', 'GET'])
 def buscador():
@@ -287,7 +295,6 @@ def detalleIncidente():
     idIncidente=request.args.get("id")
 
     IncidenteBuscado = Incidente.buscarIncidentePorId(idIncidente)
-    print(IncidenteBuscado)
     TipoInc = IncidenteBuscado['tipo']
     TramoInc = IncidenteBuscado['tramo']
     Comentario  = IncidenteBuscado['comentario']
@@ -313,8 +320,6 @@ def nuevoIncidente():
     tramo=request.form.get("tramo") 
     fecha_creacion= datetime.now()  
     try:
-        print(tipo)
-        print(comentario)
         nuevoIncidente = Incidente(tipo,comentario,tramo, fecha_creacion)
         nuevoIncidente.cargarIncidente()
 
@@ -372,6 +377,33 @@ def generarAlertaDesdeIncidente():
 
     return jsonify({'result':'success'})
 
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+
+    if request.method=='GET':
+        return render_template('login.html')
+
+    if request.method=='POST':        
+        nombre=request.form.get("nombreUsuario") 
+        contra=request.form.get("contrasena") 
+
+    usu = Usuario.buscarUsuarioPorNombre(nombre)
+
+    if usu == None:
+        return render_template('login.html')
+
+    else:
+        correcto = Usuario.check_password(usu.contrasena,contra)
+
+
+        if correcto:
+            global sesion_usuario
+            sesion_usuario = usu
+            return redirect(url_for('novedades'))
+           
+        else: 
+            return render_template('login.html')
+
 
 global fechaDesde
 fechaDesde1 = datetime.now()
@@ -389,7 +421,8 @@ tipoRiesgo = ""
 global tramoRuta
 tramoRuta = ""
 
-
+global sesion_usuario
+sesion_usuario = ""
 
 if __name__ == "__main__":
     app.run(debug=True,
