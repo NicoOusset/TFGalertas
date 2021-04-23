@@ -35,7 +35,7 @@ def novedades():
         if sesion_usuario.is_authenticated:        
             return render_template('novedades.html')
     else:
-        return "no tenes permisos"
+        return render_template('novedades.html')
 
 @app.route('/buscador', methods=['POST', 'GET'])
 def buscador():

@@ -1,7 +1,6 @@
 from kivymd.app import MDApp
 from kivy.lang.builder import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
-import helpers
 from kivy.properties import ObjectProperty
 from kivymd.uix.menu import MDDropdownMenu
 from kivymd.uix.list import MDList, ThreeLineListItem
@@ -196,14 +195,6 @@ class PantallaNovedades(Screen):
             self.ids.container.add_widget(itemi)
 
 
-
-    #hilo = threading.Thread(target=novedades)
-    #hilo.start()   
-    # Iniciamos la ejecución del thread,
-
-
-
-# Create the screen manager
 sm = ScreenManager()
 sm.add_widget(Home(name='home'))
 sm.add_widget(PantallaGenerarIncidentes(name='incidente'))
