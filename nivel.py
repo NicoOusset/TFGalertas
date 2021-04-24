@@ -32,3 +32,7 @@ class Nivel:
         Niveles = cliente[db]['Niveles'].find()      
         return Niveles 
 
+""" tipos = [("leve","Leve"),("moderado","Moderado"),("alto","Alto"),("extrema","Extrema")]
+for t in tipos:
+    tip = Nivel(t[0],t[1])
+    tip.cargarNuevoNivel()  """

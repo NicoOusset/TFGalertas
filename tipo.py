@@ -31,3 +31,6 @@ class Tipo:
     def buscarTipos():
         Tipos = cliente[db]['Tipos'].find()      
         return Tipos 
+
+
+

@@ -15,7 +15,7 @@ def leerCSV(nombre):
     print(len(df))
     print(df.head())
             
-            # range(10) range(len(df))
+           # range(10) range(len(df))
     for i in range(len(df)):
         
         fechaLectura = df.loc[i, "Fecha"]
@@ -30,15 +30,13 @@ def leerCSV(nombre):
         velocidadVehic =  df.loc[i, "VelocidadVehiculo"]
         longitudVehic =  df.loc[i, "LongitudVehiculo"]
         existenciaHumo = df.loc[i, "Humo"]
-        
-        
-        #fecha = datetime.strptime(fechaLectura, '%Y-%m-%d %H:%M:%S.%f')
-        #fecha = datetime.strptime(fechaLectura, '%Y-%m-%d %H:%M:%S')       
-        fecha = datetime.strptime(fechaLectura, '%d/%m/%Y %H:%M')  
 
-        datos=[fecha, ubicacion, temperatura, humedad, presion, velocidadViento, milimetrosLluvia, puntoRocio, velocidadVehic, longitudVehic, existenciaHumo]
+        fechaActual = datetime.now()
+       
+        #fecha = datetime.strptime(fechaLectura, '%d/%m/%Y %H:%M')  
+        
+        datos=[fechaActual, ubicacion, temperatura, humedad, presion, velocidadViento, milimetrosLluvia, puntoRocio, velocidadVehic, longitudVehic, existenciaHumo]
         
         receptor.recibirDatos(datos)
 
-        #time.sleep(1)
-        
+        time.sleep(6)
